@@ -1,0 +1,31 @@
+{
+  "name": "offlinewordmaster",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devaspirant0510/offlineWordMaster.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devaspirant0510/offlineWordMaster/issues"
+  },
+  "homepage": "https://github.com/devaspirant0510/offlineWordMaster#readme",
+  "dependencies": {
+    "lit": "^2.7.4",
+    "rxjs": "^7.8.1",
+    "webpack": "^5.84.1",
+    "webpack-cli": "^5.1.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.1",
+    "@babel/plugin-proposal-decorators": "^7.22.3",
+    "@babel/preset-env": "^7.22.2",
+    "babel-loader": "^9.1.2"
+  }
+}
