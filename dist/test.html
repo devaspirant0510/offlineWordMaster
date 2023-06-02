@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@latest/webcomponents-loader.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="btn-1">
+        1
+    </button>
+    <button id="btn-2">
+        2
+    </button>
+    <div id="app">
+
+    </div>
+    <script type="module">
+        import { LitElement, html, css } from 'https://unpkg.com/lit-element/lit-element.js?module';
+
+        export class MyElement extends LitElement {
+            static get properties() {
+                return {
+                    mood: { type: String }
+                }
+            }
+
+            static get styles() {
+                return css`.mood { color: green; }`;
+            }
+
+            render() {
+                return html`Web Components are <span class="mood">${this.mood}</span>!`;
+            }
+        }
+        class MyElement2 extends LitElement {
+            static get properties() {
+                return {
+                    mood: { type: String }
+                }
+            }
+
+            render() {
+                return html`<h1>asd</h1>`;
+            }
+        }
+
+        customElements.define('my-element2', MyElement2);
+        customElements.define('my-element', MyElement);
+
+        const routes = {
+            "/": "<my-element></my-element>",
+            "/2": "<my-element2></my-element2>"
+        }
+        const appDiv = document.querySelector('#app');
+        const renderHTML = (pathName) => {
+            appDiv.innerHTML = routes[pathName];
+        }
+        const onNavigate = (pathName) => {
+            window.history.pushState(
+                {},
+                '',
+                window.location.origin + pathName
+            );
+            renderHTML(pathName);
+        }
+        const b1 = document.querySelector("#btn-1")
+        const b2 = document.querySelector("#btn-2")
+        b1.addEventListener("click",()=>{
+            onNavigate("/")
+        })
+        b2.addEventListener("click",()=>{
+            onNavigate("/2")
+        })
+
+
+    </script>
+</body>
+
+</html>
