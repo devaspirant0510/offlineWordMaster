@@ -10,10 +10,11 @@ class View{
         this.mainSection = document.querySelector("#section-word-list");
         this.wordList = document.querySelector("#li-word-list");
         this.dataBiniding()
-        viewModel.init();
+        viewModel.init()
     }
     dataBiniding(){
         this.vm.obWordList.subscribe((value)=>{
+            console.log(value);
             console.log(value);
             
             value.map(item=>{

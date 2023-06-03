@@ -26,6 +26,7 @@
     "@babel/core": "^7.22.1",
     "@babel/plugin-proposal-decorators": "^7.22.3",
     "@babel/preset-env": "^7.22.2",
-    "babel-loader": "^9.1.2"
+    "babel-loader": "^9.1.2",
+    "webpack-dev-server": "^4.15.0"
   }
 }

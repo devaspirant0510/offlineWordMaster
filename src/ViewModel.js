@@ -1,4 +1,4 @@
-import {Subject} from "rxjs"
+import {Subject,BehaviorSubject} from "rxjs"
 class ViewModel{
     /**
      * 
@@ -9,9 +9,9 @@ class ViewModel{
         this.obWordList = new Subject();
     }
     init(){
-        const data = this.service.getWordList();
-        console.log(data);
-        this.obWordList.next(this.service.getWordList())
+        this.service.getWordList().then(result=>{
+            this.obWordList.next(result)
+        });
     }
 
 }

@@ -1,6 +1,9 @@
-// @ts-check
 const path = require("path")
+const {Configuration} = require("webpack")
 
+/** 
+ * @type {Configuration} 
+ */
 module.exports = {
     entry:"./src/app.js",
     mode:"development",
@@ -24,6 +27,13 @@ module.exports = {
     output:{
         filename:"bundle.js",
         path:path.resolve(__dirname,"dist")
-    }
+    },
+    devServer:{
+        static:{
+            directory:path.join(__dirname,"dist")
 
+        },
+        compress:true,
+        port:8080
+    }
 }
