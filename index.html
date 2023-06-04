@@ -17,17 +17,26 @@
             </h1>
         </nav>
         <aside id="side-container">
+            <h2>list</h2>
             <section id="section-word-list">
                 <ul id="li-word-list">
 
                 </ul>
-                <input id="input-word-name"/>
-                <button id="btn-add-word">추가</button>
+                <div id="input-button-container">
+                    <input id="input-word-name"/>
+                    <button id="btn-add-word">추가</button>
+                </div>
             </section>
         </aside>
         <article id="article-container">
-            MainPage
             <h2 id="h2-word-title"></h2>
+            <ol id="li-word-info-list">
+            </ol>
+                <div id="input-wrapper">
+                    <input type="text" placeholder="Enter eng" id="input-word-item-eng"/>
+                    <input type="text" placeholder="Enter kor" id="input-word-item-kor" />
+                    <button id="btn-add-word-item">Submit</button>
+                </div>
         </article>
     </main>
     <script src="./bundle.js"></script>
