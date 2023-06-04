@@ -66,7 +66,9 @@ class Service{
 
     async addWordItem(wordIndex,kor,eng){
         const entity = new WordEntity(kor,eng);
-        await this.repo.addWordItem(wordIndex,entity);
+        const list = await this.repo.addWordItem(wordIndex,entity);
+        return list;
+        
     }
 
 

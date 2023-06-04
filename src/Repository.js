@@ -86,6 +86,7 @@ class Repository {
         const resGetIdx = await this.dm.transactionMapper(getReq);
         resGetIdx.data = [...resGetIdx.data,wordEntity]
         store.put(resGetIdx)
+        return resGetIdx.data;
     }
     /**
      * @returns {string[]}

@@ -20,7 +20,7 @@ class ViewModel {
         /**@type {Subject<DictionaryEntity|null>} */
         this.obCurrentWordInfo = new BehaviorSubject(null);
         /** @type {Subject<Array<WordEntity>>} */
-        this.obWordInfoList = new Subject();
+        this.obWordInfoList = new Subject([]);
 
         this.obInputWordItemKor = new BehaviorSubject("");
         this.obInputWordItemEng = new BehaviorSubject("");
@@ -59,9 +59,12 @@ class ViewModel {
     addWordItem() {
         const currentData = this.obCurrentWordInfo.getValue();
         const wordIdx = currentData.id
-        const kor = this.obInputWordItemEng.getValue();
-        const eng = this.obInputWordItemKor.getValue();
-        this.service.addWordItem(wordIdx, kor, eng);
+        const kor = this.obInputWordItemKor.getValue();
+        const eng = this.obInputWordItemEng.getValue();
+        this.service.addWordItem(wordIdx, kor, eng).then(wordEntitys=>{
+            this.obWordInfoList.next(wordEntitys);
+
+        })
     }
 
 }

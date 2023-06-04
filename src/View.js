@@ -76,7 +76,7 @@ class View {
             this.wordList.innerHTML = ""
             value.map(item => {
                 const li = document.createElement("li");
-                li.textContent = item.wordName;
+                li.innerHTML = `${item.wordName}<img src="resource/dots.png" width="20" height="20"/>`;
                 this.wordList.append(li);
                 li.addEventListener("click", (e) => {
                     this.vm.currentWordInfo = item;
@@ -94,23 +94,22 @@ class View {
     }
     wordInfodataBiniding() {
         this.vm.obWordInfoList.subscribe((value) => {
-            this.wordInfoList.innerHTML = ""
+            this.wordInfoList.innerHTML = "";
             value.map(item => {
                 const li = document.createElement("li");
-                li.textContent = `${item.eng} ${item.kor}`
-                this.wordInfoList.append(li)
-            })
-        });
-        this.vm.obWordTitile.subscribe((value) => {
-            // this.wordTitle.textContent = value
+                const element = `
+                        <span class="english">${item.eng}</span>
+                        <span class="korean">${item.kor}</span>
+                `;
+                li.innerHTML = element;
+                this.wordInfoList.append(li);
+            });
         });
         this.vm.obInputWordItemEng.subscribe((value)=>{
             this.inputWordItemEng.value = value
-            console.log(value);
         });
         this.vm.obInputWordItemKor.subscribe((value)=>{
             this.inputWordItemKor.value = value
-            console.log(value);
         });
         this.vm.obCurrentWordInfo.subscribe((value)=>{
             if(value){
