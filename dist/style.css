@@ -1,3 +1,9 @@
+body{
+    margin: 0;
+    padding: 20px;
+    background-color: #f2f2f2;
+    color: #333333;
+}
 #main-container{
     display: grid;
     grid-template-columns: 1fr 4fr;
@@ -10,3 +16,114 @@
     
 }
 
+ul{
+    list-style-type: none;
+}
+#li-word-list{
+    /* border :1px solid black;
+    border-radius: 15px;
+    padding : 10px; */
+    padding: 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    overflow-y: auto;
+    height: 70vh;
+}
+#li-word-list>li{
+    padding:8px 16px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+#li-word-list>li:last-child{
+    border-bottom: none
+}
+#li-word-list>li:hover{
+    background-color: #ebebeb;
+    color: #333;
+    font-weight: bold;
+}
+#input-word-name, #btn-add-word{
+    flex: 1;
+    padding:6px 12px;
+    border:1px solid #ccc;
+    border-radius: 4px;
+}
+#btn-add-word{
+    color :white;
+    cursor: pointer;
+    background-color: #4CAF50;
+}
+#input-button-container{
+    display: flex;
+
+}
+#li-word-list>li:focus,#li-word-list>li:active{
+    background-color: #ebebeb;
+    color:#333;
+    font-weight: bold;
+}
+
+#li-word-info-list{
+    padding: 0;
+    margin: 0;
+    height: 70vh;
+    background-color: #f5f5f5;
+
+}
+#li-word-info-list>li:first-child{
+    margin-top: 10px;
+}
+#li-word-info-list>li{
+    margin: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
+#h2-word-title,#side-container>h2{
+    font-size: 24px;
+    font-weight: bold;
+    color :#333;
+    text-align: center;
+    margin-top: 20px;
+    height: 36px;
+}
+
+#input-wrapper{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+#input-wrapper > input{
+    flex-grow: 1;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius: 4px;
+}
+#input-wrapper > button{
+    padding:10px 20px;
+    background-color: #007bff;
+    color:#fff;
+    border: none;
+    border-radius: 4px;
+    margin-left: 10px;
+    cursor: pointer;
+
+}
+::-webkit-scrollbar{
+    width: 3px;
+
+    background-color: rgba(245,245,245,0.7);
+}
+::-webkit-scrollbar-thumb{
+    background-color: rgba(136,136,136,0.7);
+
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover{
+    background-color: #555;
+}

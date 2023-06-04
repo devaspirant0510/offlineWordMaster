@@ -32,11 +32,34 @@ class Repository {
         const result = await this.dm.transactionMapper(store.getAll())
         return result;
     }
+    async addWordHeader(wordName){
+        const reqDB = this.dm.openDB();
+        let store = await this.dm.getObjectStore(reqDB)
+        const data = new DictionaryEntity(wordName,[])
+        const addReq = store.add(data)
+        console.log("addwordheaer",addReq);
+        
+        const result = await this.dm.transactionMapper(addReq)
+        return result;
+    }
+
+    /**
+     * 
+     * @param {number} index 
+     * @returns {Promise<DictionaryEntity>}
+     */
+    async readOne(index){
+        const reqDB = this.dm.openDB();
+        let store = await this.dm.getObjectStore(reqDB)
+        store = store.get(index);
+        const result = await this.dm.transactionMapper(store)
+        return result
+    }
 
     /**
      * 
      * @param {string} wordName 
-     * @returns {T}
+     * @returns {Promise<number>}
      */
     async createWordOne(wordName){
         const reqDB = this.dm.openDB()
@@ -44,6 +67,25 @@ class Repository {
         const reqAdd = store.add({wordName:wordName,data:[]})
         const result = await this.dm.transactionMapper(reqAdd)
         return result;
+    }
+    async createWordDummy(wordname){
+        const reqDb = this.dm.openDB();
+        const store = await this.dm.getObjectStore(reqDb);
+        const getReq = store.get(2)
+        const resGet = await this.dm.transactionMapper(getReq);
+        console.log(resGet);
+        
+
+    }
+    async addWordItem(wordIndex,wordEntity){
+        const reqDB = this.dm.openDB();
+        const store = await this.dm.getObjectStore(reqDB);
+        const getReq = store.get(wordIndex);
+        console.log("getREq",getReq);
+        
+        const resGetIdx = await this.dm.transactionMapper(getReq);
+        resGetIdx.data = [...resGetIdx.data,wordEntity]
+        store.put(resGetIdx)
     }
     /**
      * @returns {string[]}

@@ -2,13 +2,11 @@
  * @typedef {Object} WordEntity
  * @property {string} kor
  * @property {string} eng
- * @property {number} id
  */
 class WordEntity{
-    constructor(kor,eng,id){
+    constructor(kor,eng){
         this.kor = kor;
         this.eng = eng;
-        this.id = id
     }
 }
 export default WordEntity

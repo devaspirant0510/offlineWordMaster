@@ -12,20 +12,13 @@ class DBManager {
     }
     initializeDB(){
         const requets = this.openDB()
-        console.log("init db");
-        
         requets.onupgradeneeded = (e)=>{
             const db = requets.result;
-            console.log("init db onupgrade");
-            
-
             if(!db.objectStoreNames.contains(DBManager.storeName)){
                 const store = db.createObjectStore(DBManager.storeName,{keyPath:'id',autoIncrement:true})
                 store.createIndex(DBManager.WORD_NAME_INDEX,"wordName",{unique:true})
             }
         }
-        
-
     }
     async transactionMapper(requset){
         return new Promise((resolve,reject)=>{
@@ -88,7 +81,7 @@ class DBManager {
      */
     async getStore(storeName) {
         const db = await this.openDatabase();
-        const tr = db.transaction(storeName, "readonly");
+        const tr = db.transaction(storeName, "readwrite");
         const os = tr.objectStore(storeName)
         console.log(os);
 

@@ -21,14 +21,11 @@
     </div>
     <script src="https://unpkg.com/rxjs@^7/dist/bundles/rxjs.umd.min.js"></script>
     <script>
-        const {Subject,pipe,map,first} = rxjs
+        const {BehaviorSubject,Subject,pipe,map,first} = rxjs
 
-        const a = new Subject();
-        a.pipe().subscribe(x=>{
-            console.log(x);
-            
-        })
-        a.next([1,2,3])
+        const a = new Bsk();
+        
+        
     </script>
     <script type="module">
         import { LitElement, html, css } from 'https://unpkg.com/lit-element/lit-element.js?module';
