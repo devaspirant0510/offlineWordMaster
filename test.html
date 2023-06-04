@@ -19,63 +19,20 @@
     <div id="app">
 
     </div>
+    <script src="https://unpkg.com/rxjs@^7/dist/bundles/rxjs.umd.min.js"></script>
+    <script>
+        const {Subject,pipe,map,first} = rxjs
+
+        const a = new Subject();
+        a.pipe().subscribe(x=>{
+            console.log(x);
+            
+        })
+        a.next([1,2,3])
+    </script>
     <script type="module">
         import { LitElement, html, css } from 'https://unpkg.com/lit-element/lit-element.js?module';
 
-        export class MyElement extends LitElement {
-            static get properties() {
-                return {
-                    mood: { type: String }
-                }
-            }
-
-            static get styles() {
-                return css`.mood { color: green; }`;
-            }
-
-            render() {
-                return html`Web Components are <span class="mood">${this.mood}</span>!`;
-            }
-        }
-        class MyElement2 extends LitElement {
-            static get properties() {
-                return {
-                    mood: { type: String }
-                }
-            }
-
-            render() {
-                return html`<h1>asd</h1>`;
-            }
-        }
-
-        customElements.define('my-element2', MyElement2);
-        customElements.define('my-element', MyElement);
-
-        const routes = {
-            "/": "<my-element></my-element>",
-            "/2": "<my-element2></my-element2>"
-        }
-        const appDiv = document.querySelector('#app');
-        const renderHTML = (pathName) => {
-            appDiv.innerHTML = routes[pathName];
-        }
-        const onNavigate = (pathName) => {
-            window.history.pushState(
-                {},
-                '',
-                window.location.origin + pathName
-            );
-            renderHTML(pathName);
-        }
-        const b1 = document.querySelector("#btn-1")
-        const b2 = document.querySelector("#btn-2")
-        b1.addEventListener("click",()=>{
-            onNavigate("/")
-        })
-        b2.addEventListener("click",()=>{
-            onNavigate("/2")
-        })
 
 
     </script>
