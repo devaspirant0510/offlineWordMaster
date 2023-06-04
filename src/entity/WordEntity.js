@@ -11,3 +11,4 @@ class WordEntity{
         this.id = id
     }
 }
+export default WordEntity

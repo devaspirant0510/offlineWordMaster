@@ -1,4 +1,4 @@
-import WordEntity from "../WordEntity";
+import WordEntity from "../entity/WordEntity";
 
 class DBManager {
     static dbname = "wordDictionary"
@@ -12,11 +12,16 @@ class DBManager {
     }
     initializeDB(){
         const requets = this.openDB()
+        console.log("init db");
+        
         requets.onupgradeneeded = (e)=>{
             const db = requets.result;
+            console.log("init db onupgrade");
+            
+
             if(!db.objectStoreNames.contains(DBManager.storeName)){
                 const store = db.createObjectStore(DBManager.storeName,{keyPath:'id',autoIncrement:true})
-                store.createIndex(WORD_NAME_INDEX,"wordName",{unique:true})
+                store.createIndex(DBManager.WORD_NAME_INDEX,"wordName",{unique:true})
             }
         }
         
