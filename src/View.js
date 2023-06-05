@@ -1,5 +1,6 @@
 import ViewModel from "./ViewModel";
-import { fromEvent } from "rxjs"
+import { fromEvent,scan,pipe } from "rxjs"
+import {ViewState} from "./utils/Constant"
 
 class View {
     /**
@@ -31,6 +32,7 @@ class View {
         });
 
         const eventAddWord = fromEvent(this.btnAddWord, "click")
+
         eventAddWord.subscribe(() => {
             if (this.vm.obInputWord.getValue()===""){
                 return;
@@ -44,6 +46,14 @@ class View {
             this.vm.addWordItem()
             this.vm.obInputWordItemEng.next("")
             this.vm.obInputWordItemKor.next("")
+        })
+
+        const eventShowKor = fromEvent(this.btnShowKor,"click")
+        //const eventShowEng = fromEvent(this.btnShowEng,"click")
+        eventShowKor.pipe(
+            scan((v)=>false,false)
+        ).subscribe(v=>{
+            console.log(v);
         })
 
     }
@@ -70,10 +80,15 @@ class View {
         /** @type {HTMLElement} wordinfo 에서 english input */
         this.inputWrapper = document.querySelector("#input-wrapper");
         this.inputWrapper.style.visibility = "hidden"
+
+        this.btnShowKor =document.querySelector("#btn-show-kor")
+        this.btnShowEng = document.querySelector("#btn-show-eng")
+        this.korRegTag = document.querySelectorAll(".korean")
+        this.engRegTag = document.querySelectorAll(".english")
     }
     wordListDataBinding(){
         this.vm.obWordList.subscribe((value) => {
-            this.wordList.innerHTML = ""
+           this.wordList.innerHTML = ""
             value.map(item => {
                 const li = document.createElement("li");
                 li.innerHTML = `${item.wordName}<img src="resource/dots.png" width="20" height="20"/>`;
