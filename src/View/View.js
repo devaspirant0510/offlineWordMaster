@@ -1,6 +1,7 @@
-import ViewModel from "./ViewModel";
-import { fromEvent,scan,pipe } from "rxjs"
-import {ViewState} from "./utils/Constant"
+import ViewModel from "../ViewModel/ViewModel";
+import { fromEvent, scan, pipe, tap, merge, mapTo, map } from "rxjs"
+import { ViewState } from "../utils/Constant"
+import { WordContextMenu,WordListItem } from "./layouts/WordList"
 
 class View {
     /**
@@ -21,40 +22,56 @@ class View {
             this.vm.obInputWord.next(e.target.value)
         });
 
-        const eventInputItemKor = fromEvent(this.inputWordItemKor,"input")
-        eventInputItemKor.subscribe((e)=>{
+        const eventInputItemKor = fromEvent(this.inputWordItemKor, "input")
+        eventInputItemKor.subscribe((e) => {
             this.vm.obInputWordItemKor.next(e.target.value)
         });
 
-        const eventInputItemEng = fromEvent(this.inputWordItemEng,"input")
-        eventInputItemEng.subscribe((e)=>{
+        const eventInputItemEng = fromEvent(this.inputWordItemEng, "input")
+        eventInputItemEng.subscribe((e) => {
             this.vm.obInputWordItemEng.next(e.target.value)
         });
 
         const eventAddWord = fromEvent(this.btnAddWord, "click")
 
         eventAddWord.subscribe(() => {
-            if (this.vm.obInputWord.getValue()===""){
+            if (this.vm.obInputWord.getValue() === "") {
                 return;
             }
             this.vm.addWord(this.vm.obInputWord.getValue())
             this.wordList.scrollTop = this.wordList.clientHeight;
         })
 
-        const eventAddWordItem = fromEvent(this.btnWordItemAdd,"click")
-        eventAddWordItem.subscribe(()=>{
+        const eventAddWordItem = fromEvent(this.btnWordItemAdd, "click")
+        eventAddWordItem.subscribe(() => {
             this.vm.addWordItem()
             this.vm.obInputWordItemEng.next("")
             this.vm.obInputWordItemKor.next("")
         })
 
-        const eventShowKor = fromEvent(this.btnShowKor,"click")
-        //const eventShowEng = fromEvent(this.btnShowEng,"click")
-        eventShowKor.pipe(
-            scan((v)=>false,false)
-        ).subscribe(v=>{
-            console.log(v);
-        })
+        const eventShowKor = fromEvent(this.btnShowKor, "click").pipe(mapTo("kor"))
+        const eventShowEng = fromEvent(this.btnShowEng, "click").pipe(mapTo("eng"))
+        const mergeEvent = merge(
+            eventShowEng,
+            eventShowKor
+        )
+        mergeEvent.pipe(
+            scan((state, event) => {
+                return { ...state, [event]: !state[event] }
+            }, { kor: false, eng: false }),
+            tap(state => {
+                console.log(state);
+                
+                if(state.kor===false && state.eng===false){
+                    this.korRegTag.forEach(el =>el.style.visibility = "visible")
+                    this.engRegTag.forEach(el =>el.style.visibility = "visible")
+                }else{
+                    this.korRegTag.forEach(el =>el.style.visibility = state.kor ? "visible" : "hidden")
+                    this.engRegTag.forEach(el =>el.style.visibility = state.eng ? "visible" : "hidden")
+
+                }
+            })
+        ).subscribe();
 
     }
     settingDom() {
@@ -81,17 +98,26 @@ class View {
         this.inputWrapper = document.querySelector("#input-wrapper");
         this.inputWrapper.style.visibility = "hidden"
 
-        this.btnShowKor =document.querySelector("#btn-show-kor")
+        this.wordToolsWrapper = document.querySelector("#container-word-tools");
+        this.wordToolsWrapper.style.visibility = "hidden";
+        this.btnShowKor = document.querySelector("#btn-show-kor")
         this.btnShowEng = document.querySelector("#btn-show-eng")
         this.korRegTag = document.querySelectorAll(".korean")
         this.engRegTag = document.querySelectorAll(".english")
     }
-    wordListDataBinding(){
+    wordListDataBinding() {
         this.vm.obWordList.subscribe((value) => {
-           this.wordList.innerHTML = ""
+            this.wordList.innerHTML = ""
             value.map(item => {
-                const li = document.createElement("li");
-                li.innerHTML = `${item.wordName}<img src="resource/dots.png" width="20" height="20"/>`;
+                this.vm.obWordListCtxMenuToggle
+                const ctxMenuCallback = (e,imgWrapper,toggle)=>{
+                    e.preventDefault();
+                    const ctx = WordContextMenu();
+                    this.vm.obWordListCtxMenuToggle.next({wordName:item.wordName,state:!this.vm.obWordListCtxMenuToggle.getValue()})
+                    imgWrapper.append(ctx)
+
+                }
+                const li = WordListItem(item.wordName,ctxMenuCallback,this.vm.obWordListCtxMenuToggle)
                 this.wordList.append(li);
                 li.addEventListener("click", (e) => {
                     this.vm.currentWordInfo = item;
@@ -101,7 +127,7 @@ class View {
             });
         });
         this.vm.obInputWord.subscribe((value) => {
-            if (value!==undefined) {
+            if (value !== undefined) {
                 this.inputWordName.value = value;
             }
         })
@@ -109,6 +135,9 @@ class View {
     }
     wordInfodataBiniding() {
         this.vm.obWordInfoList.subscribe((value) => {
+            this.inputWrapper.style.visibility = ViewState.VISIBLE
+            this.wordToolsWrapper.style.visibility = ViewState.VISIBLE
+            
             this.wordInfoList.innerHTML = "";
             value.map(item => {
                 const li = document.createElement("li");
@@ -118,20 +147,41 @@ class View {
                 `;
                 li.innerHTML = element;
                 this.wordInfoList.append(li);
+                this.korRegTag = document.querySelectorAll(".korean")
+                this.engRegTag = document.querySelectorAll(".english")
             });
         });
-        this.vm.obInputWordItemEng.subscribe((value)=>{
+        this.vm.obInputWordItemEng.subscribe((value) => {
             this.inputWordItemEng.value = value
         });
-        this.vm.obInputWordItemKor.subscribe((value)=>{
+        this.vm.obInputWordItemKor.subscribe((value) => {
             this.inputWordItemKor.value = value
         });
-        this.vm.obCurrentWordInfo.subscribe((value)=>{
-            if(value){
+        this.vm.obCurrentWordInfo.subscribe((value) => {
+            if (value) {
                 this.wordTitle.textContent = value.wordName;
                 this.inputWrapper.style.visibility = "visible"
             }
+
+        })
+        this.vm.obWordListCtxMenuToggle.subscribe((value)=>{
+            console.log(value);
+            const s = this.wordList.childNodes;
+            s.forEach(el=>{
+                if(el.textContent===value.wordName){
+                    
+                    
+                    
+
+                }
+            })
             
+            console.log(s);
+            
+            
+            if(value){
+                
+            }
         })
 
 

@@ -1,9 +1,10 @@
-import View from "./View";
-import ViewModel from "./ViewModel";
-import Service from "./Service";
-import Repository from "./Repository";
-import routes, { renderHTML } from "./routes"
+import View from "./View/View";
+import ViewModel from "./ViewModel/ViewModel";
+import Service from "./Domain/Service"
+import Repository from "./Data/repository/Repository";
+
 const repo = new Repository()
 const service = new Service(repo)
 const viewModel = new ViewModel(service)
-const view = new View(viewModel)
+
+new View(viewModel)

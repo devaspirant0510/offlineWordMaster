@@ -1,7 +1,7 @@
 // @ts-check
-import DBManager from "./utils/DBManager"
-import WordEntity from "./entity/WordEntity"
-import DictionaryEntity from "./entity/DictionaryEntity"
+import DBManager from "../../utils/DBManager"
+import WordEntity from "../entity/WordEntity"
+import DictionaryEntity from "../entity/DictionaryEntity"
 
 class Repository {
     /**

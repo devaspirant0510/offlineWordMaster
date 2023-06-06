@@ -1,6 +1,6 @@
 //@ts-check
-import Repository from "./Repository";
-import WordEntity from "./entity/WordEntity";
+import Repository from "../Data/repository/Repository";
+import WordEntity from "../Data/entity/WordEntity";
 
 class Service{
     /**

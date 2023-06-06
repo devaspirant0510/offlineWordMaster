@@ -1,4 +1,4 @@
-import WordEntity from "../entity/WordEntity";
+import WordEntity from "../Data/entity/WordEntity";
 
 class DBManager {
     static dbname = "wordDictionary"
@@ -23,7 +23,6 @@ class DBManager {
     async transactionMapper(requset){
         return new Promise((resolve,reject)=>{
             requset.onsuccess = (e)=>{
-                console.log(e.target);
                 resolve(e.target.result)
             }
             requset.onerror = ()=>{
@@ -68,12 +67,8 @@ class DBManager {
     }
     async createStore(storeName) {
         const db = await this.openDatabase()
-        console.log(db);
-
         const tr = db.transaction(storeName, "readwrite");
         tr.objectStore(storeName)
-
-
     }
     /**
      * 
@@ -83,11 +78,7 @@ class DBManager {
         const db = await this.openDatabase();
         const tr = db.transaction(storeName, "readwrite");
         const os = tr.objectStore(storeName)
-        console.log(os);
-
         return os;
-
-
     }
 }
 export default DBManager

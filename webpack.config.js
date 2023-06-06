@@ -8,6 +8,13 @@ module.exports = {
     entry:"./src/app.js",
     mode:"development",
     resolve:{
+        alias:{
+            // "@Domain":path.resolve(__dirname,"src/Domain"),
+            // "@Data":path.resolve(__dirname,"src/Data/repository"),
+            // "@Layout":path.resolve(__dirname,"src/View/layouts"),
+            // "@ViewModel":path.resolve(__dirname,"src/ViewModel")
+
+        },
         extensions:['.js']
     },
     module:{

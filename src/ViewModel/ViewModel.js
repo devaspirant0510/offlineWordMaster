@@ -1,7 +1,7 @@
 import { Subject, BehaviorSubject, pipe, map } from "rxjs"
-import Service from "./Service"
-import WordEntity from "./entity/WordEntity";
-import DictionaryEntity from "./entity/DictionaryEntity";
+import Service from "../Domain/Service"
+import WordEntity from "../Data/entity/WordEntity";
+import DictionaryEntity from "../Data/entity/DictionaryEntity";
 
 class ViewModel {
     /**
@@ -24,15 +24,14 @@ class ViewModel {
 
         this.obInputWordItemKor = new BehaviorSubject("");
         this.obInputWordItemEng = new BehaviorSubject("");
+
+        this.obWordListCtxMenuToggle = new BehaviorSubject(false)
     }
     set wordTitle(wordname) {
         this.obWordTitile.next(wordname)
     }
     set currentWordInfo(wordEntity) {
         this.obCurrentWordInfo.next(wordEntity)
-    }
-    test(value) {
-        this.service.addDummyWordData(value)
     }
     init() {
         this.service.getWordList().then(result => {
