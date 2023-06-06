@@ -181,3 +181,7 @@ ul{
 .btn-word-update:active{
     transform: translateY(1px);
 }
+
+#word-ctx-menu{
+    position: absolute;
+}
