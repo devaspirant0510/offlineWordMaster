@@ -154,3 +154,30 @@ ul{
 ::-webkit-scrollbar-thumb:hover{
     background-color: #555;
 }
+
+.btn-word-delete{
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #ff4d4f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.btn-word-update{
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #1890ff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.btn-word-delete:hover,
+.btn-word-update:hover{
+    opacity: 0.8;
+}
+.btn-word-delete:active,
+.btn-word-update:active{
+    transform: translateY(1px);
+}
