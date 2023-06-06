@@ -40,11 +40,24 @@ class ViewModel {
     }
     setWordInfoList(index) {
         this.service.getWordInfos(index).then(r => {
-            this.obWordInfoList.next(r)
+            if(r){
+                this.obWordInfoList.next(r)
+
+            }
         })
 
     }
-    removeWord(wordName,wordId,changeName){
+    removeWord(isRemove,wordId){
+        if(isRemove){
+            this.service.removeWordName(wordId).then(r=>{
+                console.log(r);
+                this.obWordInfoList.next(r)
+                
+            }).catch(e=>{
+                console.log(e.message);
+                
+            })
+        }
 
     }
     updateWord(wordName,wordId,changeName){
@@ -53,19 +66,25 @@ class ViewModel {
         }
         this.service.updateWordName(wordId,changeName).then(r=>{
             this.obWordList.next(r);
-            
+        }).catch(e=>{
+            alert(e.message)
         })
 
     }
     addWord(wordName) {
+        if (wordName==="" || wordName===undefined){
+            alert("내용을 입력해주세요");
+            return;
+        }
         this.service.addWord(wordName).then(r => {
             if (r === null) {
-                return;
-
+                throw new Error("add word failed.");
             }
             const currentList = this.obWordList.getValue()
             const newList = [...currentList, r]
             this.obWordList.next(newList)
+        }).catch(e=>{
+            alert(e.message.toString());
         })
     }
     addWordItem() {

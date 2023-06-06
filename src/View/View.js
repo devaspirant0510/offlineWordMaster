@@ -32,18 +32,12 @@ class View {
             this.vm.obInputWordItemEng.next(e.target.value)
         });
 
-        const eventAddWord = fromEvent(this.btnAddWord, "click")
-
-        eventAddWord.subscribe(() => {
-            if (this.vm.obInputWord.getValue() === "") {
-                return;
-            }
+        fromEvent(this.btnAddWord, "click").subscribe(() => {
             this.vm.addWord(this.vm.obInputWord.getValue())
             this.wordList.scrollTop = this.wordList.clientHeight;
         })
 
-        const eventAddWordItem = fromEvent(this.btnWordItemAdd, "click")
-        eventAddWordItem.subscribe(() => {
+        fromEvent(this.btnWordItemAdd, "click").subscribe(() => {
             this.vm.addWordItem()
             this.vm.obInputWordItemEng.next("")
             this.vm.obInputWordItemKor.next("")
@@ -134,6 +128,7 @@ class View {
                 fromEvent(btnDelete,"click").subscribe(()=>{
                     console.log("remove click");
                     const deleteValue = confirm("삭제하면 복구못합니다 진짜 할거야?")
+                    this.vm.removeWord(deleteValue,item.id)
                     
                 })
             });

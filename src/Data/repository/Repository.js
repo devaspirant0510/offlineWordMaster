@@ -49,12 +49,21 @@ class Repository {
         const resGetIdx = await this.dm.transactionMapper(getReq);
         resGetIdx.wordName = wordName; 
         const resultPut = await this.dm.transactionMapper(store.put(resGetIdx));
-        console.log(resultPut);
+        const resultGet = await this.dm.transactionMapper(store.getAll())
+        return resultGet;
+    }
+
+    async removeWordHeader(wordId){
+        const reqDB = this.dm.openDB();
+        const store = await this.dm.getObjectStore(reqDB);
+        const rmReq = store.delete(wordId);
+        const result = await this.dm.transactionMapper(rmReq);
+        console.log("rm",result);
         const resultGet = await this.dm.transactionMapper(store.getAll())
         console.log(resultGet);
-        return resultGet;
         
-         
+        return resultGet;
+
     }
 
     /**
@@ -81,15 +90,6 @@ class Repository {
         const reqAdd = store.add({wordName:wordName,data:[]})
         const result = await this.dm.transactionMapper(reqAdd)
         return result;
-    }
-    async createWordDummy(wordname){
-        const reqDb = this.dm.openDB();
-        const store = await this.dm.getObjectStore(reqDb);
-        const getReq = store.get(2)
-        const resGet = await this.dm.transactionMapper(getReq);
-        console.log(resGet);
-        
-
     }
     async addWordItem(wordIndex,wordEntity){
         const reqDB = this.dm.openDB();
