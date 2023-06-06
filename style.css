@@ -157,7 +157,7 @@ ul{
 
 .btn-word-delete{
     display: inline-block;
-    padding: 6px 12px;
+    padding: 4px 8px;
     background-color: #ff4d4f;
     color: #fff;
     border: none;
@@ -166,7 +166,7 @@ ul{
 }
 .btn-word-update{
     display: inline-block;
-    padding: 6px 12px;
+    padding: 4px 8px;
     background-color: #1890ff;
     color: #fff;
     border: none;
