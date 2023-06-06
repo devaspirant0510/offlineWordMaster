@@ -7,32 +7,32 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@latest/webcomponents-loader.js"></script>
     <title>Document</title>
+    <style>
+        #f{
+            display:flex;
+            justify-content: space-between;
+        }
+        #last{
+            color: blue;
+            font-size: 30px;
+            position: absolute;
+        }
+    </style>
 </head>
 
 <body>
-    <button id="btn-1">
-        1
-    </button>
-    <button id="btn-2">
-        2
-    </button>
-    <div id="app">
+    <div id="f">
+        <button>
+            1
+        </button>
+        <button>
+            2
+        </button>
+        <button id="last">
+            3
+        </button>
 
     </div>
-    <script src="https://unpkg.com/rxjs@^7/dist/bundles/rxjs.umd.min.js"></script>
-    <script>
-        const {BehaviorSubject,Subject,pipe,map,first} = rxjs
-
-        const a = new Bsk();
-        
-        
-    </script>
-    <script type="module">
-        import { LitElement, html, css } from 'https://unpkg.com/lit-element/lit-element.js?module';
-
-
-
-    </script>
 </body>
 
 </html>

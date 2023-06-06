@@ -42,6 +42,20 @@ class Repository {
         const result = await this.dm.transactionMapper(addReq)
         return result;
     }
+    async updateWordHeader(wordId,wordName){
+        const reqDB = this.dm.openDB();
+        const store = await this.dm.getObjectStore(reqDB);
+        const getReq = store.get(wordId);
+        const resGetIdx = await this.dm.transactionMapper(getReq);
+        resGetIdx.wordName = wordName; 
+        const resultPut = await this.dm.transactionMapper(store.put(resGetIdx));
+        console.log(resultPut);
+        const resultGet = await this.dm.transactionMapper(store.getAll())
+        console.log(resultGet);
+        return resultGet;
+        
+         
+    }
 
     /**
      * 

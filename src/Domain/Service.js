@@ -26,29 +26,17 @@ class Service{
         return wordNames
     }
     /**
-     * 임시 데이터 
-     * @returns {Promise<number[]>}
-     */
-    async addDummyData(){
-        const add1 = await this.repo.createWordOne("chapter1")
-        const add2 = await this.repo.createWordOne("chapter2")
-        const add3 = await this.repo.createWordOne("chapter3")
-        return [add1,add2,add3]
-    }
-    async addDummyWordData(value){
-        const res = await this.repo.createWordDummy(value)
-        console.log(res);
-        
-        return res;
-
-    }
-    /**
      * @param {number} index 
      * @returns {Promise<Array<WordEntity>>}
      */
     async getWordInfos(index){
         const res = await this.repo.readOne(index)
         return res.data
+    }
+
+    async updateWordName(id,changeName){
+        const res = await this.repo.updateWordHeader(id,changeName);
+        return res;
     }
 
     async addWord(wordName){

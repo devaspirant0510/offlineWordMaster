@@ -44,6 +44,19 @@ class ViewModel {
         })
 
     }
+    removeWord(wordName,wordId,changeName){
+
+    }
+    updateWord(wordName,wordId,changeName){
+        if(wordName==="" || wordName===changeName){
+            return null;
+        }
+        this.service.updateWordName(wordId,changeName).then(r=>{
+            this.obWordList.next(r);
+            
+        })
+
+    }
     addWord(wordName) {
         this.service.addWord(wordName).then(r => {
             if (r === null) {

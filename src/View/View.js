@@ -110,20 +110,32 @@ class View {
             this.wordList.innerHTML = ""
             value.map(item => {
                 this.vm.obWordListCtxMenuToggle
-                const ctxMenuCallback = (e,imgWrapper,toggle)=>{
+                const ctxMenuCallback = (e,imgWrapper,li)=>{
                     e.preventDefault();
                     const ctx = WordContextMenu();
-                    this.vm.obWordListCtxMenuToggle.next({wordName:item.wordName,state:!this.vm.obWordListCtxMenuToggle.getValue()})
-                    imgWrapper.append(ctx)
 
                 }
                 const li = WordListItem(item.wordName,ctxMenuCallback,this.vm.obWordListCtxMenuToggle)
-                this.wordList.append(li);
-                li.addEventListener("click", (e) => {
+                const menu = li[1]
+                this.wordList.append(li[0]);
+                li[0].addEventListener("click", (e) => {
                     this.vm.currentWordInfo = item;
                     this.vm.wordTitle = item.wordName;
                     this.vm.setWordInfoList(item.id);
                 });
+                const btnUpdate = menu.querySelector(".btn-word-update")
+                const btnDelete = menu.querySelector(".btn-word-delete")
+                fromEvent(btnUpdate,"click").subscribe(()=>{
+                    const updateValue = prompt("수정할 값을 입력해주세요",item.wordName)
+                    console.log("update click",updateValue);
+                    this.vm.updateWord(item.wordName,item.id,updateValue)
+
+                })
+                fromEvent(btnDelete,"click").subscribe(()=>{
+                    console.log("remove click");
+                    const deleteValue = confirm("삭제하면 복구못합니다 진짜 할거야?")
+                    
+                })
             });
         });
         this.vm.obInputWord.subscribe((value) => {
@@ -165,22 +177,14 @@ class View {
 
         })
         this.vm.obWordListCtxMenuToggle.subscribe((value)=>{
-            console.log(value);
-            const s = this.wordList.childNodes;
-            s.forEach(el=>{
-                if(el.textContent===value.wordName){
-                    
-                    
-                    
-
-                }
-            })
-            
-            console.log(s);
-            
-            
-            if(value){
-                
+            console.log(value.state);
+            if(!value.wrapper || !value.menuRef){
+                return;
+            }
+            if(value.state){
+                value.menuRef.visibility = "visible"
+            }else{
+                value.menuRef.visibility = "hidden"
             }
         })
 
