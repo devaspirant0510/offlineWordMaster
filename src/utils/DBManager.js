@@ -1,5 +1,3 @@
-import WordEntity from "../Data/entity/WordEntity";
-
 class DBManager {
     static dbname = "wordDictionary"
     static storeName = "myWords"
@@ -11,9 +9,9 @@ class DBManager {
         return indexedDB.open(DBManager.dbname,1)
     }
     initializeDB(){
-        const requets = this.openDB()
-        requets.onupgradeneeded = (e)=>{
-            const db = requets.result;
+        const request = this.openDB()
+        request.onupgradeneeded = (e)=>{
+            const db = request.result;
             if(!db.objectStoreNames.contains(DBManager.storeName)){
                 const store = db.createObjectStore(DBManager.storeName,{keyPath:'id',autoIncrement:true})
                 store.createIndex(DBManager.WORD_NAME_INDEX,"wordName",{unique:true})
@@ -42,12 +40,16 @@ class DBManager {
      */
     async getDBAll() {
         const request = this.openDB()
-        const store = this.getObjectStore(request)
+        const store = this.getObjectStore2()
         const reqGetAll = store.getAll();
         const allDB = await this.transactionMapper(reqGetAll);
         return allDB;
     }
 
+    async getObjectStore2(){
+        const req = await this.openDB()
+        return await this.getObjectStore(req)
+    }
 
 
     async openDatabase() {
