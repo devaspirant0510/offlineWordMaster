@@ -11,7 +11,7 @@ class View {
     constructor(viewModel) {
         this.vm = viewModel
         this.settingDom()
-        this.wordInfodataBiniding()
+        this.wordInfoDataBinding()
         this.wordListDataBinding()
         this.settingEvent()
         this.vm.init()
@@ -139,7 +139,7 @@ class View {
         })
 
     }
-    wordInfodataBiniding() {
+    wordInfoDataBinding() {
         this.vm.obWordInfoList.subscribe((value) => {
             this.inputWrapper.style.visibility = ViewState.VISIBLE
             this.wordToolsWrapper.style.visibility = ViewState.VISIBLE

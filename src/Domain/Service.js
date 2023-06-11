@@ -1,5 +1,4 @@
 //@ts-check
-import Repository from "../Data/repository/Repository";
 import WordEntity from "../Data/entity/WordEntity";
 
 class Service {
@@ -42,17 +41,14 @@ class Service {
         const readAll = await this.repo.readAll();
         const validName = readAll.filter(item => item.wordName === changeName)
         if (validName.length === 0) {
-            const res = await this.repo.updateWordHeader(id, changeName);
-            return res;
+            return await this.repo.updateWordHeader(id, changeName);
 
         } else {
             throw new Error("There are duplicate values, 'wordName' must be a unique name")
         }
     }
     async removeWordName(id) {
-        const res = await this.repo.removeWordHeader(id)
-        return res;
-
+        return await this.repo.removeWordHeader(id);
     }
 
     async addWord(wordName) {
@@ -62,20 +58,16 @@ class Service {
         if (validName.length === 0) {
             // word 추가후 추가한 데이터 리턴
             const resultIndex = await this.repo.addWordHeader(wordName)
-            const resultData = await this.repo.readOne(resultIndex)
-            return resultData
+            return await this.repo.readOne(resultIndex)
         } else {
             // 중복된 값이 있을시
             throw new Error("There are duplicate values, 'wordName' must be a unique name")
         }
-        return null;
     }
 
     async addWordItem(wordIndex, kor, eng) {
         const entity = new WordEntity(kor, eng);
-        const list = await this.repo.addWordItem(wordIndex, entity);
-        return list;
-
+        return await this.repo.addWordItem(wordIndex, entity);
     }
 
 
