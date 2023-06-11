@@ -46,3 +46,31 @@ export const WordListItem = (wordName, callback, toggle1) => {
     return [li,menu];
 
 }
+
+/**
+ *
+ * @param eng
+ * @param kor
+ * @return {HTMLElement}
+ */
+export const WordItemLayout=(eng,kor)=>{
+    const li = document.createElement("li");
+    li.innerHTML = `
+                        <span class="english">
+                            ${eng}
+                        </span>
+                        <span class="korean" >
+                            ${kor}
+                        </span>
+                `;
+    const img = document.createElement("img");
+    img.src="/resource/dots3.png";
+    img.width = 25;
+    img.height = 25;
+
+    const div = document.createElement("div");
+    div.style.display = "flex"
+    div.style.alignItems = "center"
+    div.append(li,img)
+    return div;
+}

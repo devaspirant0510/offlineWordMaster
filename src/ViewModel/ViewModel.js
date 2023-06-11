@@ -83,6 +83,7 @@ class ViewModel {
             const currentList = this.obWordList.getValue()
             const newList = [...currentList, r]
             this.obWordList.next(newList)
+            this.obInputWord.next("");
         }).catch(e=>{
             alert(e.message.toString());
         })

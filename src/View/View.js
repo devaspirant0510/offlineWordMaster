@@ -1,7 +1,7 @@
 import ViewModel from "../ViewModel/ViewModel";
 import { fromEvent, scan, pipe, tap, merge, mapTo, map } from "rxjs"
 import { ViewState } from "../utils/Constant"
-import { WordContextMenu,WordListItem } from "./layouts/WordList"
+import {WordContextMenu, WordItemLayout, WordListItem} from "./layouts/WordList"
 
 class View {
     /**
@@ -103,7 +103,6 @@ class View {
         this.vm.obWordList.subscribe((value) => {
             this.wordList.innerHTML = ""
             value.map(item => {
-                this.vm.obWordListCtxMenuToggle
                 const ctxMenuCallback = (e,imgWrapper,li)=>{
                     e.preventDefault();
                     const ctx = WordContextMenu();
@@ -147,12 +146,7 @@ class View {
             
             this.wordInfoList.innerHTML = "";
             value.map(item => {
-                const li = document.createElement("li");
-                const element = `
-                        <span class="english">${item.eng}</span>
-                        <span class="korean">${item.kor}</span>
-                `;
-                li.innerHTML = element;
+                const li = WordItemLayout(item.eng,item.kor)
                 this.wordInfoList.append(li);
                 this.korRegTag = document.querySelectorAll(".korean")
                 this.engRegTag = document.querySelectorAll(".english")
