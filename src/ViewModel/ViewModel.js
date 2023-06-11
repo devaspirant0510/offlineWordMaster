@@ -1,12 +1,12 @@
-import { Subject, BehaviorSubject, pipe, map } from "rxjs"
+import {Subject, BehaviorSubject, pipe, map} from "rxjs"
 import Service from "../Domain/Service"
 import WordEntity from "../Data/entity/WordEntity";
 import DictionaryEntity from "../Data/entity/DictionaryEntity";
 
 class ViewModel {
     /**
-     * 
-     * @param {Service} service 
+     *
+     * @param {Service} service
      */
     constructor(service) {
         this.service = service
@@ -14,7 +14,7 @@ class ViewModel {
         /**@type {BehaviorSubject<Array<{wordName:string,id:number}>>} */
         this.obWordList = new BehaviorSubject([]);
         /**@type {BehaviorSubject<string>} */
-        this.obInputWord = new BehaviorSubject();
+        this.obInputWord = new BehaviorSubject("");
         /**@type {Subject<string>} */
         this.obWordTitile = new Subject();
         /**@type {BehaviorSubject<DictionaryEntity|null>} */
@@ -27,52 +27,67 @@ class ViewModel {
 
         this.obWordListCtxMenuToggle = new BehaviorSubject(false)
     }
-    set wordTitle(wordname) {
-        this.obWordTitile.next(wordname)
+
+    set wordTitle(wordName) {
+        this.obWordTitile.next(wordName)
     }
+
     set currentWordInfo(wordEntity) {
         this.obCurrentWordInfo.next(wordEntity)
     }
+
     init() {
         this.service.getWordList().then(result => {
             this.obWordList.next(result)
-        });
-    }
-    setWordInfoList(index) {
-        this.service.getWordInfos(index).then(r => {
-            if(r){
-                this.obWordInfoList.next(r)
+            console.log("r", result[0].id)
+            if (result[0]) {
+                this.service.getWordInfos(result[0].id).then(list => {
+                    console.log(list)
+                    if (list) {
+                        const newVal = new DictionaryEntity(result[0].wordName, list);
+                        this.obCurrentWordInfo.next(newVal);
+                        this.obWordInfoList.next(list);
+                    }
+                })
 
             }
-        })
 
+        });
     }
-    removeWord(isRemove,wordId){
-        if(isRemove){
-            this.service.removeWordName(wordId).then(r=>{
+
+    setWordInfoList(index) {
+        this.service.getWordInfos(index).then(r => {
+            if (r) {
+                this.obWordInfoList.next(r)
+            }
+        })
+    }
+
+    removeWord(isRemove, wordId) {
+        if (isRemove) {
+            this.service.removeWordName(wordId).then(r => {
                 console.log(r);
                 this.obWordInfoList.next(r)
-                
-            }).catch(e=>{
+            }).catch(e => {
                 console.log(e.message);
-                
             })
         }
-
     }
-    updateWord(wordName,wordId,changeName){
-        if(wordName==="" || wordName===changeName){
+
+    updateWord(wordName, wordId, changeName) {
+        if (wordName === "" || wordName === changeName) {
             return null;
         }
-        this.service.updateWordName(wordId,changeName).then(r=>{
+        this.service.updateWordName(wordId, changeName).then(r => {
             this.obWordList.next(r);
-        }).catch(e=>{
+        }).catch(e => {
             alert(e.message)
         })
 
     }
+
     addWord(wordName) {
-        if (wordName==="" || wordName===undefined){
+        if (wordName === "" || wordName === undefined) {
             alert("내용을 입력해주세요");
             return;
         }
@@ -84,16 +99,17 @@ class ViewModel {
             const newList = [...currentList, r]
             this.obWordList.next(newList)
             this.obInputWord.next("");
-        }).catch(e=>{
+        }).catch(e => {
             alert(e.message.toString());
         })
     }
+
     addWordItem() {
         const currentData = this.obCurrentWordInfo.getValue();
         const wordIdx = currentData.id
         const kor = this.obInputWordItemKor.getValue();
         const eng = this.obInputWordItemEng.getValue();
-        this.service.addWordItem(wordIdx, kor, eng).then(wordEntitys=>{
+        this.service.addWordItem(wordIdx, kor, eng).then(wordEntitys => {
             this.obWordInfoList.next(wordEntitys);
 
         })
@@ -104,13 +120,13 @@ class ViewModel {
      * @param wordId {number}
      * @param wordItemId {number}
      */
-    removeWordItem(isDelete,wordId,wordItemId){
-        if(!isDelete){
-            return ;
+    removeWordItem(isDelete, wordId, wordItemId) {
+        if (!isDelete) {
+            return;
         }
-        this.service.removeWordItem(wordId,wordItemId).then(wordList=>{
+        this.service.removeWordItem(wordId, wordItemId).then(wordList => {
             this.obWordInfoList.next(wordList);
-        }).catch(e=>{
+        }).catch(e => {
             alert(e.message)
         })
     }
@@ -123,23 +139,23 @@ class ViewModel {
      * @param changeEng {string|null}
      * @param changeKor {string|null}
      */
-    updateWordItem(wordId,wordItemId,itemInfo,changeEng,changeKor){
-        if(!changeEng || !changeKor){
+    updateWordItem(wordId, wordItemId, itemInfo, changeEng, changeKor) {
+        if (!changeEng || !changeKor) {
             return null;
         }
-        if(changeEng===itemInfo.eng && changeKor===itemInfo.kor){
+        if (changeEng === itemInfo.eng && changeKor === itemInfo.kor) {
             alert("변경할값이 없습니다.")
         }
-        this.service.updateWordItem(wordId,wordItemId,changeKor,changeEng).then(wordList=>{
+        this.service.updateWordItem(wordId, wordItemId, changeKor, changeEng).then(wordList => {
             console.log(wordList)
             this.obWordInfoList.next(wordList)
-        }).catch(e=>{
+        }).catch(e => {
             console.log(e.message)
         });
-
 
 
     }
 
 }
+
 export default ViewModel;
