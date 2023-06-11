@@ -114,7 +114,30 @@ class ViewModel {
             alert(e.message)
         })
     }
-    updateWordItem(wordId,wordItemId,changeEng,changeKor){
+
+    /**
+     *
+     * @param wordId {number}
+     * @param wordItemId {number}
+     * @param itemInfo {WordEntity}
+     * @param changeEng {string|null}
+     * @param changeKor {string|null}
+     */
+    updateWordItem(wordId,wordItemId,itemInfo,changeEng,changeKor){
+        if(!changeEng || !changeKor){
+            return null;
+        }
+        if(changeEng===itemInfo.eng && changeKor===itemInfo.kor){
+            alert("변경할값이 없습니다.")
+        }
+        this.service.updateWordItem(wordId,wordItemId,changeKor,changeEng).then(wordList=>{
+            console.log(wordList)
+            this.obWordInfoList.next(wordList)
+        }).catch(e=>{
+            console.log(e.message)
+        });
+
+
 
     }
 

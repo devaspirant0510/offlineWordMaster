@@ -147,33 +147,36 @@ class View {
             this.wordToolsWrapper.style.visibility = ViewState.VISIBLE
 
             this.wordInfoList.innerHTML = "";
-            value.map((item,itemIdx) => {
+            value.map((item, itemIdx) => {
                 const dictEntity = this.vm.obCurrentWordInfo.getValue();
                 const li = WordItemLayout(item.eng, item.kor, dictEntity.id);
                 this.wordInfoList.append(li[0]);
                 const img = li[1];
                 const ctx = li[2];
-                const btnUpdate = ctx.querySelector("."+CSS_REF.WORD_ITEM_UPDATE_BUTTON)
-                const btnDelete = ctx.querySelector("."+CSS_REF.WORD_ITEM_DELETE_BUTTON)
-                fromEvent(btnUpdate,"click").subscribe(()=>{
-                    console.log(`remove word :${dictEntity.id} wordItemIdx :${itemIdx} update`)
+                const btnUpdate = ctx.querySelector("." + CSS_REF.WORD_ITEM_UPDATE_BUTTON)
+                const btnDelete = ctx.querySelector("." + CSS_REF.WORD_ITEM_DELETE_BUTTON)
+                fromEvent(btnUpdate, "click").subscribe(() => {
 
 
+                    const changeEng = prompt("바꿀 eng 값을 입력해주세요", item.eng);
+                    const changeKor = prompt("바꿀 kor 값을 입력해주세요", item.kor);
+                    this.vm.updateWordItem(dictEntity.id, itemIdx, item,changeEng, changeKor);
 
+                    console.log(changeEng, changeKor)
 
                 })
-                fromEvent(btnDelete,"click").subscribe(()=>{
+                fromEvent(btnDelete, "click").subscribe(() => {
                     const isDelete = confirm("삭제시 복구 못하는데 할거??");
-                    this.vm.removeWordItem(isDelete,dictEntity.id,itemIdx);
+                    this.vm.removeWordItem(isDelete, dictEntity.id, itemIdx);
 
 
                 })
                 fromEvent(img, "click").subscribe(() => {
                     const wordId = dictEntity.id;
                     if (ctx.style.visibility === "visible") {
-                        ctx.style.visibility ="hidden"
+                        ctx.style.visibility = "hidden"
                     } else {
-                        ctx.style.visibility ="visible"
+                        ctx.style.visibility = "visible"
                     }
                 })
                 this.korRegTag = document.querySelectorAll(".korean")

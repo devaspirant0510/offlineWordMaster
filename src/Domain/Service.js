@@ -89,6 +89,29 @@ class Service {
         throw new Error("remove word Item failed....");
     }
 
+    async updateWordItem(wordId,wordItemIdx,changeKor,changeEng){
+        const newWord = new WordEntity(changeKor,changeEng);
+        const getOne = await this.repo.readOne(wordId);
+        let listToUpdate = getOne.data;
+        listToUpdate = listToUpdate.map((item,itemIdx)=>{
+            if(itemIdx===wordItemIdx){
+                return newWord
+            }else{
+                return item;
+            }
+        })
+        console.log(listToUpdate);
+        const result = await this.repo.updateWordItemList(wordId,listToUpdate);
+        if (result>0){
+            const updateList =  await this.repo.getWordItemList(wordId);
+            console.log(updateList)
+            return updateList;
+        }
+        throw new Error("Update Word List Item Failed...");
+
+
+    }
+
 
 }
 

@@ -86,5 +86,13 @@ class Repository {
         const result = await this.dm.transactionMapper(getOne);
         return result.data;
     }
+    async updateWordItemList(wordId,wordList){
+        const store = await  this.dm.getObjectStore2();
+        const getOne = store.get(wordId);
+        const res = await this.dm.transactionMapper(getOne)
+        const resultEntity = {...res,data:wordList};
+        return await this.dm.transactionMapper(store.put(resultEntity))
+
+    }
 }
 export default Repository;
