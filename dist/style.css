@@ -159,7 +159,8 @@ ul{
     background-color: #555;
 }
 
-.btn-word-delete{
+.btn-word-delete,
+.btn-word-item-delete{
     display: inline-block;
     padding: 4px 8px;
     background-color: #ff4d4f;
@@ -168,7 +169,8 @@ ul{
     border-radius: 4px;
     cursor: pointer;
 }
-.btn-word-update{
+.btn-word-update,
+.btn-word-item-update{
     display: inline-block;
     padding: 4px 8px;
     background-color: #1890ff;
@@ -178,11 +180,18 @@ ul{
     cursor: pointer;
 }
 .btn-word-delete:hover,
-.btn-word-update:hover{
+.btn-word-update:hover,
+.btn-word-item-update:hover,
+.btn-word-item-delete:hover
+{
     opacity: 0.8;
 }
+
 .btn-word-delete:active,
-.btn-word-update:active{
+.btn-word-update:active,
+.btn-word-item-update:active,
+.btn-word-item-delete:active
+{
     transform: translateY(1px);
 }
 
