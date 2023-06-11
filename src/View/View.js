@@ -1,12 +1,12 @@
 import ViewModel from "../ViewModel/ViewModel";
-import { fromEvent, scan, pipe, tap, merge, mapTo, map } from "rxjs"
-import { ViewState } from "../utils/Constant"
+import {fromEvent, scan, pipe, tap, merge, mapTo, map} from "rxjs"
+import {CSS_REF, ViewState} from "../utils/Constant"
 import {WordContextMenu, WordItemLayout, WordListItem} from "./layouts/WordList"
 
 class View {
     /**
-     * 
-     * @param {ViewModel} viewModel 
+     *
+     * @param {ViewModel} viewModel
      */
     constructor(viewModel) {
         this.vm = viewModel
@@ -16,6 +16,7 @@ class View {
         this.settingEvent()
         this.vm.init()
     }
+
     settingEvent() {
         const eventInputWord = fromEvent(this.inputWordName, "input")
         eventInputWord.subscribe((e) => {
@@ -51,23 +52,24 @@ class View {
         )
         mergeEvent.pipe(
             scan((state, event) => {
-                return { ...state, [event]: !state[event] }
-            }, { kor: false, eng: false }),
+                return {...state, [event]: !state[event]}
+            }, {kor: false, eng: false}),
             tap(state => {
                 console.log(state);
-                
-                if(state.kor===false && state.eng===false){
-                    this.korRegTag.forEach(el =>el.style.visibility = "visible")
-                    this.engRegTag.forEach(el =>el.style.visibility = "visible")
-                }else{
-                    this.korRegTag.forEach(el =>el.style.visibility = state.kor ? "visible" : "hidden")
-                    this.engRegTag.forEach(el =>el.style.visibility = state.eng ? "visible" : "hidden")
+
+                if (state.kor === false && state.eng === false) {
+                    this.korRegTag.forEach(el => el.style.visibility = "visible")
+                    this.engRegTag.forEach(el => el.style.visibility = "visible")
+                } else {
+                    this.korRegTag.forEach(el => el.style.visibility = state.kor ? "visible" : "hidden")
+                    this.engRegTag.forEach(el => el.style.visibility = state.eng ? "visible" : "hidden")
 
                 }
             })
         ).subscribe();
 
     }
+
     settingDom() {
         /**@type {HTMLElement} wordList 컨테이너*/
         this.mainSection = document.querySelector("#section-word-list");
@@ -99,16 +101,15 @@ class View {
         this.korRegTag = document.querySelectorAll(".korean")
         this.engRegTag = document.querySelectorAll(".english")
     }
+
     wordListDataBinding() {
         this.vm.obWordList.subscribe((value) => {
             this.wordList.innerHTML = ""
             value.map(item => {
-                const ctxMenuCallback = (e,imgWrapper,li)=>{
+                const ctxMenuCallback = (e, imgWrapper, li) => {
                     e.preventDefault();
-                    const ctx = WordContextMenu();
-
                 }
-                const li = WordListItem(item.wordName,ctxMenuCallback,this.vm.obWordListCtxMenuToggle)
+                const li = WordListItem(item.wordName, ctxMenuCallback, this.vm.obWordListCtxMenuToggle)
                 const menu = li[1]
                 this.wordList.append(li[0]);
                 li[0].addEventListener("click", (e) => {
@@ -118,17 +119,17 @@ class View {
                 });
                 const btnUpdate = menu.querySelector(".btn-word-update")
                 const btnDelete = menu.querySelector(".btn-word-delete")
-                fromEvent(btnUpdate,"click").subscribe(()=>{
-                    const updateValue = prompt("수정할 값을 입력해주세요",item.wordName)
-                    console.log("update click",updateValue);
-                    this.vm.updateWord(item.wordName,item.id,updateValue)
+                fromEvent(btnUpdate, "click").subscribe(() => {
+                    const updateValue = prompt("수정할 값을 입력해주세요", item.wordName)
+                    console.log("update click", updateValue);
+                    this.vm.updateWord(item.wordName, item.id, updateValue)
 
                 })
-                fromEvent(btnDelete,"click").subscribe(()=>{
+                fromEvent(btnDelete, "click").subscribe(() => {
                     console.log("remove click");
                     const deleteValue = confirm("삭제하면 복구못합니다 진짜 할거야?")
-                    this.vm.removeWord(deleteValue,item.id)
-                    
+                    this.vm.removeWord(deleteValue, item.id)
+
                 })
             });
         });
@@ -139,15 +140,42 @@ class View {
         })
 
     }
+
     wordInfoDataBinding() {
         this.vm.obWordInfoList.subscribe((value) => {
             this.inputWrapper.style.visibility = ViewState.VISIBLE
             this.wordToolsWrapper.style.visibility = ViewState.VISIBLE
-            
+
             this.wordInfoList.innerHTML = "";
-            value.map(item => {
-                const li = WordItemLayout(item.eng,item.kor)
-                this.wordInfoList.append(li);
+            value.map((item,itemIdx) => {
+                const dictEntity = this.vm.obCurrentWordInfo.getValue();
+                const li = WordItemLayout(item.eng, item.kor, dictEntity.id);
+                this.wordInfoList.append(li[0]);
+                const img = li[1];
+                const ctx = li[2];
+                const btnUpdate = ctx.querySelector("."+CSS_REF.WORD_ITEM_UPDATE_BUTTON)
+                const btnDelete = ctx.querySelector("."+CSS_REF.WORD_ITEM_DELETE_BUTTON)
+                fromEvent(btnUpdate,"click").subscribe(()=>{
+                    console.log(`remove word :${dictEntity.id} wordItemIdx :${itemIdx} update`)
+
+
+
+
+                })
+                fromEvent(btnDelete,"click").subscribe(()=>{
+                    const isDelete = confirm("삭제시 복구 못하는데 할거??");
+                    this.vm.removeWordItem(isDelete,dictEntity.id,itemIdx);
+
+
+                })
+                fromEvent(img, "click").subscribe(() => {
+                    const wordId = dictEntity.id;
+                    if (ctx.style.visibility === "visible") {
+                        ctx.style.visibility ="hidden"
+                    } else {
+                        ctx.style.visibility ="visible"
+                    }
+                })
                 this.korRegTag = document.querySelectorAll(".korean")
                 this.engRegTag = document.querySelectorAll(".english")
             });
@@ -165,14 +193,14 @@ class View {
             }
 
         })
-        this.vm.obWordListCtxMenuToggle.subscribe((value)=>{
+        this.vm.obWordListCtxMenuToggle.subscribe((value) => {
             console.log(value.state);
-            if(!value.wrapper || !value.menuRef){
+            if (!value.wrapper || !value.menuRef) {
                 return;
             }
-            if(value.state){
+            if (value.state) {
                 value.menuRef.visibility = "visible"
-            }else{
+            } else {
                 value.menuRef.visibility = "hidden"
             }
         })

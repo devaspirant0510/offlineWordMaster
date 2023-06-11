@@ -17,7 +17,7 @@ class ViewModel {
         this.obInputWord = new BehaviorSubject();
         /**@type {Subject<string>} */
         this.obWordTitile = new Subject();
-        /**@type {Subject<DictionaryEntity|null>} */
+        /**@type {BehaviorSubject<DictionaryEntity|null>} */
         this.obCurrentWordInfo = new BehaviorSubject(null);
         /** @type {Subject<Array<WordEntity>>} */
         this.obWordInfoList = new Subject([]);
@@ -97,6 +97,25 @@ class ViewModel {
             this.obWordInfoList.next(wordEntitys);
 
         })
+    }
+
+    /**
+     * @param isDelete {boolean}
+     * @param wordId {number}
+     * @param wordItemId {number}
+     */
+    removeWordItem(isDelete,wordId,wordItemId){
+        if(!isDelete){
+            return ;
+        }
+        this.service.removeWordItem(wordId,wordItemId).then(wordList=>{
+            this.obWordInfoList.next(wordList);
+        }).catch(e=>{
+            alert(e.message)
+        })
+    }
+    updateWordItem(wordId,wordItemId,changeEng,changeKor){
+
     }
 
 }

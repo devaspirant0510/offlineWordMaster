@@ -70,6 +70,25 @@ class Service {
         return await this.repo.addWordItem(wordIndex, entity);
     }
 
+    /**
+     *
+     * @param wordId {number}
+     * @param wordItemIdx {number}
+     * @return {Promise<WordEntity[]|null>}
+     */
+    async removeWordItem(wordId,wordItemIdx){
+        const getOne = await this.repo.readOne(wordId);
+        let listToRemove = getOne.data;
+        listToRemove = listToRemove.filter((value, index) => index!==wordItemIdx)
+        const resultEntity = {...getOne,data:listToRemove}
+        const result = await this.repo.removeWordItem(wordId,resultEntity)
+        console.log(result)
+        if(result>0){
+            return  await this.repo.getWordItemList(wordId);
+        }
+        throw new Error("remove word Item failed....");
+    }
+
 
 }
 

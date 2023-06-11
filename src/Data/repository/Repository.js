@@ -4,7 +4,7 @@ import DictionaryEntity from "../entity/DictionaryEntity"
 
 class Repository {
     /**
-     * @param {string} wordTitle 
+     * @param {string} wordTitle
      */
     constructor(wordTitle) {
         this.dm = new DBManager()
@@ -20,57 +20,71 @@ class Repository {
         let store = await this.dm.getObjectStore2()
         return await this.dm.transactionMapper(store.getAll());
     }
-    async addWordHeader(wordName){
+
+    async addWordHeader(wordName) {
         let store = await this.dm.getObjectStore2()
-        const data = new DictionaryEntity(wordName,[])
+        const data = new DictionaryEntity(wordName, [])
         const addReq = store.add(data)
         return await this.dm.transactionMapper(addReq);
     }
-    async updateWordHeader(wordId,wordName){
+
+    async updateWordHeader(wordId, wordName) {
         const store = await this.dm.getObjectStore2();
         const getReq = store.get(wordId);
         const resGetIdx = await this.dm.transactionMapper(getReq);
-        resGetIdx.wordName = wordName; 
+        resGetIdx.wordName = wordName;
         const resultPut = await this.dm.transactionMapper(store.put(resGetIdx));
         return await this.dm.transactionMapper(store.getAll());
     }
 
-    async removeWordHeader(wordId){
-        const reqDB = this.dm.openDB();
-        const store = await this.dm.getObjectStore(reqDB);
+    async removeWordHeader(wordId) {
+        const store = await this.dm.getObjectStore2();
         const rmReq = store.delete(wordId);
         return await this.dm.transactionMapper(store.getAll());
     }
 
     /**
-     * 
-     * @param {number} index 
+     *
+     * @param {number} index
      * @returns {Promise<DictionaryEntity>}
      */
-    async readOne(index){
+    async readOne(index) {
         let store = await this.dm.getObjectStore2();
         store = store.get(index);
         return await this.dm.transactionMapper(store)
     }
 
     /**
-     * 
-     * @param {string} wordName 
+     *
+     * @param {string} wordName
      * @returns {Promise<number>}
      */
-    async createWordOne(wordName){
+    async createWordOne(wordName) {
         const store = await this.dm.getObjectStore2();
-        const reqAdd = store.add({wordName:wordName,data:[]})
+        const reqAdd = store.add({wordName: wordName, data: []})
         const result = await this.dm.transactionMapper(reqAdd)
         return result;
     }
-    async addWordItem(wordIndex,wordEntity){
+
+    async addWordItem(wordIndex, wordEntity) {
         const store = await this.dm.getObjectStore2()
         const getReq = store.get(wordIndex);
         const resGetIdx = await this.dm.transactionMapper(getReq);
-        resGetIdx.data = [...resGetIdx.data,wordEntity]
+        resGetIdx.data = [...resGetIdx.data, wordEntity]
         store.put(resGetIdx)
         return resGetIdx.data;
+    }
+
+    async removeWordItem(wordId, wordEntity) {
+        const store = await this.dm.getObjectStore2();
+        const putReq =store.put(wordEntity);
+        return await this.dm.transactionMapper(putReq);
+    }
+    async getWordItemList(wordId){
+        const store = await this.dm.getObjectStore2();
+        const getOne = store.get(wordId);
+        const result = await this.dm.transactionMapper(getOne);
+        return result.data;
     }
 }
 export default Repository;
