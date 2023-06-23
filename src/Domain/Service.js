@@ -1,5 +1,6 @@
 //@ts-check
 import WordEntity from "../Data/entity/WordEntity";
+import Repository from "../Data/repository/Repository"
 
 class Service {
     /**
@@ -110,6 +111,9 @@ class Service {
         throw new Error("Update Word List Item Failed...");
 
 
+    }
+    activeTest(){
+        
     }
 
 

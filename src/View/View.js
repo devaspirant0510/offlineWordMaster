@@ -121,7 +121,7 @@ class View {
                 const btnDelete = menu.querySelector(".btn-word-delete")
                 fromEvent(btnUpdate, "click").subscribe(() => {
                     const updateValue = prompt("수정할 값을 입력해주세요", item.wordName)
-                    console.log("update click", updateValue);
+                    console.log("update clddick", updateValue);
                     this.vm.updateWord(item.wordName, item.id, updateValue)
 
                 })

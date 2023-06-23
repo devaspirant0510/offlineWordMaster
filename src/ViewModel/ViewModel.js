@@ -39,7 +39,6 @@ class ViewModel {
     init() {
         this.service.getWordList().then(result => {
             this.obWordList.next(result)
-            console.log("r", result[0].id)
             if (result[0]) {
                 this.service.getWordInfos(result[0].id).then(list => {
                     console.log(list)
