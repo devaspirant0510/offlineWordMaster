@@ -1,5 +1,5 @@
 import {fromEvent} from "rxjs"
-import BaseView from "./BaseView"
+import BaseView from "../utils/Base/BaseView"
 import WordTestViewModel from "../ViewModel/WordTestViewModel";
 
 class WordTestView extends BaseView{
@@ -27,21 +27,9 @@ class WordTestView extends BaseView{
     }
 
     settingEvent(){
-        fromEvent(this.btnTest,"click").subscribe(()=>{
-            this.vm.onClickTestButton()
-        })
 
     }
     dataBinding(){
-        this.vm.obTestVisible.subscribe((visible)=>{
-            if(visible){
-                this.ctTest.style.display = "none"
-            }else{
-                this.ctTest.style.display = "block"
-            }
-
-
-        })
 
     }
 }

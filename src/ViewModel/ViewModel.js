@@ -2,13 +2,15 @@ import {Subject, BehaviorSubject, pipe, map} from "rxjs"
 import Service from "../Domain/Service"
 import WordEntity from "../Data/entity/WordEntity";
 import DictionaryEntity from "../Data/entity/DictionaryEntity";
+import BaseViewModel from "../utils/Base/BaseViewModel";
 
-class ViewModel {
+class ViewModel extends BaseViewModel{
     /**
      *
      * @param {Service} service
      */
     constructor(service) {
+        super();
         this.service = service
 
         /**@type {BehaviorSubject<Array<{wordName:string,id:number}>>} */

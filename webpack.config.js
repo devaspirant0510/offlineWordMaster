@@ -7,6 +7,7 @@ const {Configuration} = require("webpack")
 module.exports = {
     entry:"./src/app.js",
     mode:"development",
+    devtool: "source-map",
     resolve:{
         alias:{
             // "@Domain":path.resolve(__dirname,"src/Domain"),

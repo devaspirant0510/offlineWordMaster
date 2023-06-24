@@ -23,7 +23,7 @@
 
                 </ul>
                 <div id="input-button-container">
-                    <input id="input-word-name" />
+                    <label for="input-word-name"></label><input id="input-word-name" />
                     <button id="btn-add-word">추가</button>
                 </div>
             </section>
@@ -34,12 +34,14 @@
                 <button id=btn-word-shuffle>
                     word shuffle
                 </button>
+                <label for="btn-show-kor">
+                    show kor
+                </label>
                 <input type="checkbox" id="btn-show-kor">
-                show kor
-                </input>
+                <label for="btn-show-eng">
+                    show eng
+                </label>
                 <input type="checkbox" id="btn-show-eng">
-                show eng
-                </input>
                 <button id="btn-test">
                     test
                 </button>
@@ -54,6 +56,16 @@
         </article>
         <article id="test-container" style="display: none">
             <h2 id="h2-word-title">테스트</h2>
+            <button id="btn-test-exit">gg</button>
+            <div id="test-question">
+
+            </div>
+            <label for="test-answer">
+
+            </label>
+            <input id="test-answer"/>
+            <button>제출</button>
+
         </article>
     </main>
     <script src="./bundle.js"></script>

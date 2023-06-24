@@ -1,16 +1,12 @@
 import {BehaviorSubject} from "rxjs";
+import BaseViewModel from "../utils/Base/BaseViewModel";
 
-class WordTestViewModel{
+class WordTestViewModel extends BaseViewModel{
     constructor(service){
+        super()
         this.service = service
         /** @type {BehaviorSubject<boolean>} */
         this.obTestVisible = new BehaviorSubject(false);
-    }
-
-    onClickTestButton(){
-        this.obTestVisible.next(
-            !this.obTestVisible.getValue()
-        )
     }
 
 }
