@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>WordTestApp</title>
     <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 
@@ -13,7 +13,7 @@
     <main id="main-container">
         <nav id="nav-container">
             <h1>
-                Title
+                WordTestApp
             </h1>
         </nav>
         <aside id="side-container">
@@ -56,16 +56,27 @@
         </article>
         <article id="test-container" style="display: none">
             <h2 id="h2-word-title">테스트</h2>
-            <button id="btn-test-exit">gg</button>
-            <div id="test-question">
-
+            <button id="btn-test-exit">exit</button>
+            <div id="ct-test-option">
+                <label for="op-kor-eng">
+                    kor→eng
+                </label>
+                <input id="op-kor-eng"name="test-option" type="radio"/>
+                <label for="op-eng-kor">
+                    eng→kor
+                </label>
+                <input id="op-eng-kor" name="test-option" type="radio"/>
+                <button id="btn-test-option-start">start</button>
             </div>
-            <label for="test-answer">
-
-            </label>
-            <input id="test-answer"/>
-            <button>제출</button>
-
+            <div id="ct-test">
+                <div id="test-progress">1/20</div>
+                <div id="test-question">
+                </div>
+                <label for="test-answer">
+                </label>
+                <input id="test-answer"/>
+                <button>제출</button>
+            </div>
         </article>
     </main>
     <script src="./bundle.js"></script>
