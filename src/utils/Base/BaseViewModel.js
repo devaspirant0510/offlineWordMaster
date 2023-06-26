@@ -1,12 +1,12 @@
 import {BehaviorSubject, fromEvent} from "rxjs";
 class BaseViewModel{
-    constructor() {
-        if(BaseViewModel.instance){
-            return BaseViewModel.instance;
-        }
-        BaseViewModel.instance = this;
+    constructor(mediator) {
+        // if(BaseViewModel.instance){
+        //     return BaseViewModel.instance;
+        // }
+        // BaseViewModel.instance = this;
+        this.mediator = mediator;
         this.rootObIsTest = new BehaviorSubject(false);
-        console.log("a")
         this.rootSettingDom();
         this.rootSettingEvent();
         this.rootSubscribe();
@@ -32,6 +32,8 @@ class BaseViewModel{
     }
     rootSubscribe(){
         this.rootObIsTest.subscribe((isTest)=>{
+            console.log(isTest);
+            
             if(!isTest){
                 this.ctTestView.style.display = "none"
                 this.cTmainView.style.display = "block";
