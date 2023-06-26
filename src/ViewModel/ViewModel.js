@@ -9,10 +9,10 @@ class ViewModel extends BaseViewModel{
      *
      * @param {Service} service
      */
-    constructor(service) {
-        super();
+    constructor(service,mediator) {
+        super(mediator);
         this.service = service
-
+        mediator.register(this)
         /**@type {BehaviorSubject<Array<{wordName:string,id:number}>>} */
         this.obWordList = new BehaviorSubject([]);
         /**@type {BehaviorSubject<string>} */

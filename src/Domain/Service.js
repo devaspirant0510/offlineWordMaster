@@ -1,4 +1,3 @@
-//@ts-check
 import WordEntity from "../Data/entity/WordEntity";
 import Repository from "../Data/repository/Repository"
 
@@ -8,6 +7,10 @@ class Service {
      * @param {Repository} repository 
      */
     constructor(repository) {
+        if(Service.instance){
+            return Service.instance
+        }
+        Service.instance = this;
         this.repo = repository
     }
     /**

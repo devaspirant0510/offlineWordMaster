@@ -4,11 +4,14 @@ import ViewModel from "./ViewModel/ViewModel";
 import WordTestViewModel from "./ViewModel/WordTestViewModel";
 import Service from "./Domain/Service"
 import Repository from "./Data/repository/Repository";
+import Mediator from "./ViewModel/Mediator";
 
+const mediator = new Mediator();
 const repo = new Repository()
-const service = new Service(repo)
-const viewModel = new ViewModel(service)
-const wordTestViewModel = new WordTestViewModel(service);
+const service1 = new Service(repo)
+const service2 = new Service(repo)
+const viewModel = new ViewModel(service1,mediator)
+const wordTestViewModel = new WordTestViewModel(service2,mediator);
 
-new View(viewModel);
 new TestView(wordTestViewModel);
+new View(viewModel);
