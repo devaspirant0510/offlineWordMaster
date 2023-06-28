@@ -70,6 +70,7 @@ class Repository {
         const store = await this.dm.getObjectStore2()
         const getReq = store.get(wordIndex);
         const resGetIdx = await this.dm.transactionMapper(getReq);
+        console.log(resGetIdx);
         resGetIdx.data = [...resGetIdx.data, wordEntity]
         store.put(resGetIdx)
         return resGetIdx.data;

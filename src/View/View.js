@@ -100,6 +100,10 @@ class View {
         this.btnShowEng = document.querySelector("#btn-show-eng")
         this.korRegTag = document.querySelectorAll(".korean")
         this.engRegTag = document.querySelectorAll(".english")
+
+        document.querySelector("#dummy").addEventListener("click",()=>{
+            this.vm.addDummyData();
+        })
     }
 
     wordListDataBinding() {

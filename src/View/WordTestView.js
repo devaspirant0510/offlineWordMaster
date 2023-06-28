@@ -32,6 +32,12 @@ class WordTestView extends BaseView{
         this.opEng2Kor = document.querySelector("#op-eng-kor");
         /** @type {HTMLButtonElement} */
         this.btnTestOptionStart = document.querySelector("#btn-test-option-start");
+        /** @type {HTMLElement} */
+        this.testProgress = document.querySelector("#test-progress");
+        /** @type {HTMLElement} */
+        this.testQuestion = document.querySelector("#test-question");
+        /** @type {HTMLButtonElement} */
+        this.btnWordAnswer = document.querySelector("#btn-word-answer");
 
 
     }
@@ -59,6 +65,9 @@ class WordTestView extends BaseView{
         fromEvent(this.btnTestOptionStart,"click").subscribe(()=>{
             this.vm.testStart();
         })
+        fromEvent(this.btnWordAnswer,"click").subscribe(()=>{
+            this.vm.showNextWord();
+        })
 
 
     }
@@ -76,6 +85,22 @@ class WordTestView extends BaseView{
             }else if(isShow.main){
                 displayNone(this.mainCtTestOp)
                 displayShowen(this.mainCtTest)
+            }
+        })
+        this.vm.obWordMaxSize.subscribe((size)=>{
+            this.testProgress.textContent = `${this.vm.obWordCurSize.getValue()+1}/${size}`
+        })
+        this.vm.obWordCurSize.subscribe((size)=>{
+            this.testProgress.textContent = `${size}/${this.vm.obWordMaxSize.getValue()}`
+        })
+        this.vm.obWordQuestion.subscribe((question)=>{
+            this.testQuestion.textContent = question
+        })
+        this.vm.obNextWordOpt.subscribe((isSubmit)=>{
+            if(isSubmit){
+                this.btnWordAnswer.textContent = "제출"
+            }else{
+                this.btnWordAnswer.textContent = "다음"
             }
         })
 

@@ -55,6 +55,14 @@ class ViewModel extends BaseViewModel{
 
         });
     }
+    async addDummyData(){
+        const id = this.obCurrentWordInfo.getValue().id;
+        await this.service.addWordItem(id,"사과","apple")
+        await this.service.addWordItem(id,"시골의,지방의","rural")
+        await this.service.addWordItem(id,"도시의","urban")
+        await this.service.addWordItem(id,"출발","arrival")
+        await this.service.addWordItem(id,"도착","departure")
+    }
 
     setWordInfoList(index) {
         this.service.getWordInfos(index).then(r => {
