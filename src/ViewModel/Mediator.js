@@ -1,6 +1,7 @@
 import BaseViewModel from "../utils/Base/BaseViewModel";
 import DictionaryEntity from "../Data/entity/DictionaryEntity";
 import ViewModel from "./ViewModel";
+import WordTestViewModel from "./WordTestViewModel";
 
 class Mediator{
     /**
@@ -29,6 +30,12 @@ class Mediator{
             return vm.obCurrentWordInfo.getValue();
         } 
         return null;
+    }
+
+    testClear(){
+        /** @type {WordTestViewModel} */
+        const vm = this.viewModels.find((vm)=>vm instanceof WordTestViewModel)
+        vm.init();
     }
 }
 

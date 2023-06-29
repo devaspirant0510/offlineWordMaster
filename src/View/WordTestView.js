@@ -38,8 +38,8 @@ class WordTestView extends BaseView{
         this.testQuestion = document.querySelector("#test-question");
         /** @type {HTMLButtonElement} */
         this.btnWordAnswer = document.querySelector("#btn-word-answer");
-
-
+        /** @type {HTMLInputElement} */
+        this.inputTestAnswer = document.querySelector("#test-answer");
     }
 
     settingEvent(){
@@ -67,7 +67,12 @@ class WordTestView extends BaseView{
         })
         fromEvent(this.btnWordAnswer,"click").subscribe(()=>{
             this.vm.showNextWord();
+            this.inputTestAnswer.value = "";
+            this.inputTestAnswer.focus();
         })
+        fromEvent(this.inputTestAnswer,"keyup").subscribe((e)=>{
+            this.vm.obUserInput.next(e.target.value)
+        });
 
 
     }
@@ -88,9 +93,11 @@ class WordTestView extends BaseView{
             }
         })
         this.vm.obWordMaxSize.subscribe((size)=>{
+            console.log(size);
             this.testProgress.textContent = `${this.vm.obWordCurSize.getValue()+1}/${size}`
         })
         this.vm.obWordCurSize.subscribe((size)=>{
+            console.log(size);
             this.testProgress.textContent = `${size}/${this.vm.obWordMaxSize.getValue()}`
         })
         this.vm.obWordQuestion.subscribe((question)=>{
@@ -102,6 +109,10 @@ class WordTestView extends BaseView{
             }else{
                 this.btnWordAnswer.textContent = "다음"
             }
+        })
+        this.vm.obUserAnswers.subscribe((answers)=>{
+
+            console.log(answers);
         })
 
     }

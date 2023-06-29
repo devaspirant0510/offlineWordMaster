@@ -28,6 +28,8 @@ class ViewModel extends BaseViewModel{
         this.obInputWordItemEng = new BehaviorSubject("");
 
         this.obWordListCtxMenuToggle = new BehaviorSubject(false)
+
+        this.rootObIsTest = new BehaviorSubject(false);
     }
 
     set wordTitle(wordName) {

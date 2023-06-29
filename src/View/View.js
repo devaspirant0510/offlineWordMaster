@@ -104,6 +104,32 @@ class View {
         document.querySelector("#dummy").addEventListener("click",()=>{
             this.vm.addDummyData();
         })
+        /** @type {HTMLElement}*/
+        this.cTmainView = document.querySelector("#article-container");
+        /** @type {HTMLElement}*/
+        this.ctTestView = document.querySelector("#test-container");
+        /** @type {HTMLElement}*/
+        this.btnTest = document.querySelector("#btn-test");
+        /** @type {HTMLElement}*/
+        this.btnTestExit = document.querySelector("#btn-test-exit");
+        fromEvent(this.btnTest,"click").subscribe(isTest=>{
+            this.vm.rootObIsTest.next(!this.vm.rootObIsTest.getValue());
+        })
+        fromEvent(this.btnTestExit,"click").subscribe(()=>{
+            this.vm.rootObIsTest.next(!this.vm.rootObIsTest.getValue());
+        })
+        this.vm.rootObIsTest.subscribe((isTest)=>{
+            console.log(isTest);
+            
+            if(!isTest){
+                this.ctTestView.style.display = "none"
+                this.cTmainView.style.display = "block";
+                
+            }else{
+                this.ctTestView.style.display = "block"
+                this.cTmainView.style.display = "none";
+            }
+        })
     }
 
     wordListDataBinding() {
