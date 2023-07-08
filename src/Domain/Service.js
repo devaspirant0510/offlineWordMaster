@@ -2,8 +2,7 @@ import WordEntity from "../Data/entity/WordEntity";
 import Repository from "../Data/repository/Repository"
 
 class Service {
-    /**
-     * 
+     /**
      * @param {Repository} repository 
      */
     constructor(repository) {

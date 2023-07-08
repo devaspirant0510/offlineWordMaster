@@ -35,7 +35,7 @@ class Mediator{
     testClear(){
         /** @type {WordTestViewModel} */
         const vm = this.viewModels.find((vm)=>vm instanceof WordTestViewModel)
-        vm.init();
+        vm.clear();
     }
 }
 

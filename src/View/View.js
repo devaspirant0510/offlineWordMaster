@@ -113,9 +113,11 @@ class View {
         /** @type {HTMLElement}*/
         this.btnTestExit = document.querySelector("#btn-test-exit");
         fromEvent(this.btnTest,"click").subscribe(isTest=>{
+            console.log("test exit");
             this.vm.rootObIsTest.next(!this.vm.rootObIsTest.getValue());
         })
         fromEvent(this.btnTestExit,"click").subscribe(()=>{
+            this.vm.mediator.testClear();
             this.vm.rootObIsTest.next(!this.vm.rootObIsTest.getValue());
         })
         this.vm.rootObIsTest.subscribe((isTest)=>{
@@ -135,7 +137,9 @@ class View {
     wordListDataBinding() {
         this.vm.obWordList.subscribe((value) => {
             this.wordList.innerHTML = ""
+            console.log("subscribe obWordList",value);
             value.map(item => {
+                console.log(item);
                 const ctxMenuCallback = (e, imgWrapper, li) => {
                     e.preventDefault();
                 }
@@ -145,7 +149,7 @@ class View {
                 li[0].addEventListener("click", (e) => {
                     this.vm.currentWordInfo = item;
                     this.vm.wordTitle = item.wordName;
-                    this.vm.setWordInfoList(item.id);
+                    this.vm.setWordInfoList(item.id,item.wordName);
                 });
                 const btnUpdate = menu.querySelector(".btn-word-update")
                 const btnDelete = menu.querySelector(".btn-word-delete")
