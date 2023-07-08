@@ -199,3 +199,34 @@ ul{
 #word-ctx-menu{
     position: absolute;
 }
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    color: #333;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    table-layout: auto;
+  }
+  tr{
+    display: flex;
+  }
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    flex: 1;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  tr:hover {
+    background-color: #eaeaea;
+  }
