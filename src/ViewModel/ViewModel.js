@@ -4,6 +4,7 @@ import WordEntity from "../Data/entity/WordEntity";
 import Mediator from "./Mediator";
 import DictionaryEntity from "../Data/entity/DictionaryEntity";
 import BaseViewModel from "../utils/Base/BaseViewModel";
+import StateManager from "../utils/StateManager";
 
 class ViewModel extends BaseViewModel{
     /**
@@ -13,26 +14,26 @@ class ViewModel extends BaseViewModel{
      */
     constructor(service,mediator) {
         super(mediator);
-        console.log(this.a)
         this.service = service
         mediator.register(this)
+        this.sm = new StateManager();
         /**@type {BehaviorSubject<Array<{wordName:string,id:number}>>} */
-        this.obWordList = new BehaviorSubject([]);
+        this.obWordList = this.sm.addState(new BehaviorSubject([]));
         /**@type {BehaviorSubject<string>} */
-        this.obInputWord = new BehaviorSubject("");
+        this.obInputWord = this.sm.addState(new BehaviorSubject(""));
         /**@type {Subject<string>} */
-        this.obWordTitile = new Subject();
+        this.obWordTitile = this.sm.addState(new BehaviorSubject(""));
         /**@type {BehaviorSubject<DictionaryEntity|null>} */
-        this.obCurrentWordInfo = new BehaviorSubject(null);
+        this.obCurrentWordInfo = this.sm.addState(new BehaviorSubject(null));
         /** @type {Subject<Array<WordEntity>>} */
-        this.obWordInfoList = new Subject([]);
+        this.obWordInfoList = this.sm.addState(new BehaviorSubject([]));
 
-        this.obInputWordItemKor = new BehaviorSubject("");
-        this.obInputWordItemEng = new BehaviorSubject("");
+        this.obInputWordItemKor = this.sm.addState(new BehaviorSubject(""));
+        this.obInputWordItemEng = this.sm.addState(new BehaviorSubject(""));
 
-        this.obWordListCtxMenuToggle = new BehaviorSubject(false)
+        this.obWordListCtxMenuToggle = this.sm.addState(new BehaviorSubject(false));
 
-        this.rootObIsTest = new BehaviorSubject(false);
+        this.rootObIsTest = this.sm.addState(new BehaviorSubject(false));
     }
 
     set wordTitle(wordName) {
@@ -43,22 +44,14 @@ class ViewModel extends BaseViewModel{
         this.obCurrentWordInfo.next(wordEntity)
     }
 
-    init() {
-        this.service.getWordList().then(result => {
-            this.obWordList.next(result)
-            if (result[0]) {
-                this.service.getWordInfos(result[0].id).then(list => {
-                    console.log(list)
-                    if (list) {
-                        const newVal = new DictionaryEntity(result[0].wordName, list);
-                        this.obCurrentWordInfo.next(newVal);
-                        this.obWordInfoList.next(list);
-                    }
-                })
-
-            }
-
-        });
+    async init() {
+        const readWordList = await this.service.getWordList();
+        this.obWordList.next(readWordList)
+        const readFirstDictionary = await this.service.getFirstDictionary();
+        if(readFirstDictionary){
+            this.obCurrentWordInfo.next(readFirstDictionary)
+            this.obWordInfoList.next(readFirstDictionary.data)
+        }
     }
     async addDummyData(){
         const id = this.obCurrentWordInfo.getValue().id;

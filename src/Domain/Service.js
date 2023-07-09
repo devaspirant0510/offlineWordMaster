@@ -25,6 +25,35 @@ class Service {
         })
         return wordNames
     }
+
+    /**
+     * 단어장 리스트에서 첫번째 아이템을 리턴함
+     * @returns {Promise<WordEntity>}
+     */
+    async getWordFirstElement(){
+        const getFirstWord = (await this.getWordList())[0];
+        const getFirstDictionary = await this.getWordInfos(getFirstWord.id);
+        return getFirstDictionary;
+    }
+    async getAllDictionary(){
+        return await this.repo.readAll()
+    }
+
+    /**
+     * 첫번째 Dictionary 를 리턴하고 Dictionary 데이터가 없을시 null 리턴
+     * @returns {Promise<DictionaryEntity|null>}
+     */
+    async getFirstDictionary(){
+        const getDictionary = await this.repo.readAll()
+        if(getDictionary.length>0){
+            return getDictionary[0];
+        }
+        return null
+    }
+    async getOneDictionary(index){
+
+    }
+
     /**
      * @param {number} index 
      * @returns {Promise<Array<WordEntity>>}

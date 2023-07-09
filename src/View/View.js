@@ -14,7 +14,7 @@ class View {
         this.wordInfoDataBinding()
         this.wordListDataBinding()
         this.settingEvent()
-        this.vm.init()
+        this.vm.init().then()
     }
 
     settingEvent() {
