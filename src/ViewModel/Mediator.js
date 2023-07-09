@@ -26,8 +26,8 @@ class Mediator{
         /** @type {ViewModel} */
         const vm = this.viewModels.find((vm)=>vm instanceof ViewModel)
         if(vm){
-            console.log(vm.obCurrentWordInfo.getValue());
-            return vm.obCurrentWordInfo.getValue();
+            console.log(vm.obCurrentDictionaryInfo.getValue());
+            return vm.obCurrentDictionaryInfo.getValue();
         } 
         return null;
     }

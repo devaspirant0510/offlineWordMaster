@@ -1,5 +1,6 @@
 import {fromEvent} from "rxjs";
 import {CSS_REF} from "../../utils/Constant"
+import {displayNone,displayShowen} from "../../utils/ViewUtils"
 
 export const WordContextMenu = () => {
     const ctx = document.createElement("div");
@@ -15,38 +16,47 @@ export const WordContextMenu = () => {
     ctx.append(updateOption);
     return ctx;
 }
-
+const DotsImage =()=>{
+    const img = document.createElement("img")
+    img.classList.add = "word-menu-icon"
+    img.src = "/resource/dots3.png";
+    img.width = 25
+    img.height = 25
+    return img
+}
 /**
  * @param {string} wordName 
  */
-export const WordListItem = (wordName, callback, toggle1) => {
+export const WordListItem = (wordName) => {
     const li = document.createElement("li");
+    li.innerHTML = `${wordName}`
+
     const imgWrapper = document.createElement("div");
     imgWrapper.style.display = "flex"
-    const contextMenu = document.createElement("img")
-    contextMenu.classList.add = "word-menu-icon"
-    imgWrapper.append(contextMenu)
-    contextMenu.src = "/resource/dots3.png";
-    contextMenu.width = 25
-    contextMenu.height = 25
-    li.innerHTML = `${wordName}`
-    li.append(imgWrapper);
+
+    // dots 이미지
+    const dotsImage = DotsImage()
+
+    // 수정 삭제 메뉴
     const menu = WordContextMenu();
+    displayNone(menu)
+
+    imgWrapper.append(dotsImage)
     imgWrapper.append(menu)
-    console.log(menu);
-    
-    menu.style.display = "none"
+
+    li.append(imgWrapper);
+
     let toggle = true;
-    contextMenu.addEventListener("click", (e) => {
+    fromEvent(dotsImage,"click").subscribe(()=>{
         if (toggle) {
-            menu.style.display = "block"
-            toggle = !toggle
+            displayShowen(menu);
+            toggle = !toggle;
         } else {
-            menu.style.display = "none"
-            toggle = !toggle
+            displayNone(menu);
+            toggle = !toggle;
         }
-    });
-    return [li,menu];
+    })
+    return {li,menu};
 
 }
 

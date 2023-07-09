@@ -37,9 +37,14 @@ class Repository {
         return await this.dm.transactionMapper(store.getAll());
     }
 
+    /**
+     *
+     * @param {number} wordId
+     * @returns {Promise<DictionaryEntity[]>}
+     */
     async removeWordHeader(wordId) {
         const store = await this.dm.getObjectStore2();
-        const rmReq = store.delete(wordId);
+        store.delete(wordId);
         return await this.dm.transactionMapper(store.getAll());
     }
 

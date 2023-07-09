@@ -1,6 +1,5 @@
 import WordEntity from "../Data/entity/WordEntity";
-import Repository from "../Data/repository/Repository"
-import WordNames from "./model/WordNames";
+import {MapperWordNames} from "./Mapper/Mapper";
 
 class Service {
      /**
@@ -17,13 +16,8 @@ class Service {
      * @returns {Promise<Array<WordNames>>}
      */
     async getWordList() {
-        /** @type {Array<WordNames>} */
-        const wordNames = []
         const getAllWord = await this.repo.readAll();
-        getAllWord.map(value => {
-            wordNames.push(new WordNames(value.id,value.wordName));
-        })
-        return wordNames
+        return MapperWordNames(getAllWord)
     }
 
     /**
@@ -32,8 +26,7 @@ class Service {
      */
     async getWordFirstElement(){
         const getFirstWord = (await this.getWordList())[0];
-        const getFirstDictionary = await this.getWordInfos(getFirstWord.id);
-        return getFirstDictionary;
+        return await this.getWordInfos(getFirstWord.id);
     }
     async getAllDictionary(){
         return await this.repo.readAll()
@@ -45,13 +38,19 @@ class Service {
      */
     async getFirstDictionary(){
         const getDictionary = await this.repo.readAll()
-        if(getDictionary.length>0){
+        if(getDictionary[0]){
             return getDictionary[0];
         }
         return null
     }
-    async getOneDictionary(index){
-
+    async getDictionaryById(index){
+        const getDictionary = await this.repo.readAll();
+        const getOneDict = getDictionary.find(dict=>dict.id===index)
+        if(getOneDict){
+            return getOneDict;
+        }else{
+            return null
+        }
     }
 
     /**
@@ -77,7 +76,14 @@ class Service {
             throw new Error("There are duplicate values, 'wordName' must be a unique name")
         }
     }
+
+    /**
+     *
+     * @param {number} id
+     * @returns {Promise<DictionaryEntity[]>}
+     */
     async removeWordName(id) {
+        const removeResult = await this.repo.removeWordHeader(id)
         return await this.repo.removeWordHeader(id);
     }
 

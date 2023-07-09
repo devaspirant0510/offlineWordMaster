@@ -5,6 +5,9 @@ import Mediator from "./Mediator";
 import DictionaryEntity from "../Data/entity/DictionaryEntity";
 import BaseViewModel from "../utils/Base/BaseViewModel";
 import StateManager from "../utils/StateManager";
+import {MapperWordNames} from "../Domain/Mapper/Mapper";
+import Dictionary from "./model/Dictionary";
+import WordNames from "../Domain/model/WordNames";
 
 class ViewModel extends BaseViewModel{
     /**
@@ -17,14 +20,14 @@ class ViewModel extends BaseViewModel{
         this.service = service
         mediator.register(this)
         this.sm = new StateManager();
-        /**@type {BehaviorSubject<Array<{wordName:string,id:number}>>} */
-        this.obWordList = this.sm.addState(new BehaviorSubject([]));
+        /**@type {BehaviorSubject<Array<WordNames>>} */
+        this.obDictionaryList = this.sm.addState(new BehaviorSubject([]));
         /**@type {BehaviorSubject<string>} */
         this.obInputWord = this.sm.addState(new BehaviorSubject(""));
         /**@type {Subject<string>} */
         this.obWordTitile = this.sm.addState(new BehaviorSubject(""));
-        /**@type {BehaviorSubject<DictionaryEntity|null>} */
-        this.obCurrentWordInfo = this.sm.addState(new BehaviorSubject(null));
+        /**@type {BehaviorSubject<Dictionary|null>} */
+        this.obCurrentDictionaryInfo = this.sm.addState(new BehaviorSubject(null));
         /** @type {Subject<Array<WordEntity>>} */
         this.obWordInfoList = this.sm.addState(new BehaviorSubject([]));
 
@@ -41,20 +44,25 @@ class ViewModel extends BaseViewModel{
     }
 
     set currentWordInfo(wordEntity) {
-        this.obCurrentWordInfo.next(wordEntity)
+        this.obCurrentDictionaryInfo.next(wordEntity)
     }
 
+    /**
+     * 첫 화면로딩시 Dictionary 정보 가져오고 Dictionary 가 있을시
+     * 천번째 Dictionary 를 메인화면에 보여줌
+     * @returns {Promise<void>}
+     */
     async init() {
         const readWordList = await this.service.getWordList();
-        this.obWordList.next(readWordList)
+        this.obDictionaryList.next(readWordList)
         const readFirstDictionary = await this.service.getFirstDictionary();
         if(readFirstDictionary){
-            this.obCurrentWordInfo.next(readFirstDictionary)
+            this.obCurrentDictionaryInfo.next(new Dictionary(readFirstDictionary.id,readFirstDictionary.wordName,readFirstDictionary.data))
             this.obWordInfoList.next(readFirstDictionary.data)
         }
     }
     async addDummyData(){
-        const id = this.obCurrentWordInfo.getValue().id;
+        const id = this.obCurrentDictionaryInfo.getValue().id;
         await this.service.addWordItem(id,"사과","apple")
         await this.service.addWordItem(id,"시골의,지방의","rural")
         await this.service.addWordItem(id,"도시의","urban")
@@ -70,14 +78,29 @@ class ViewModel extends BaseViewModel{
         })
     }
 
-    removeWord(isRemove, wordId) {
+    /**
+     * 유저가 dictionary 리스트에서 단어를 선택했을때 해당 단어정보를 가져와 observer 변수에 세팅
+     * @param {number} id  Dictionary Entity 의 key 값
+     */
+    async selectDictionary(id){
+        const getOneDict = await this.service.getDictionaryById(id)
+        if(getOneDict){
+            this.obCurrentDictionaryInfo.next(getOneDict);
+        }
+
+    }
+
+    /**
+     *
+     * @param {boolean} isRemove 유저가 삭제를 원하는지 여부
+     * @param {number} wordId 삭제할 dictionary 의 key 값
+     * @returns {Promise<void>}
+     */
+    async removeWord(isRemove, wordId) {
         if (isRemove) {
-            this.service.removeWordName(wordId).then(r => {
-                console.log(r);
-                this.obWordInfoList.next(r)
-            }).catch(e => {
-                console.log(e.message);
-            })
+            const removeResult = await this.service.removeWordName(wordId)
+            const resultList = MapperWordNames(removeResult)
+            this.obDictionaryList.next(resultList)
         }
     }
 
@@ -86,7 +109,7 @@ class ViewModel extends BaseViewModel{
             return null;
         }
         this.service.updateWordName(wordId, changeName).then(r => {
-            this.obWordList.next(r);
+            this.obDictionaryList.next(r);
         }).catch(e => {
             alert(e.message)
         })
@@ -102,17 +125,17 @@ class ViewModel extends BaseViewModel{
             if (r === null) {
                 throw new Error("add word failed.");
             }
-            const currentList = this.obWordList.getValue()
+            const currentList = this.obDictionaryList.getValue()
             const newList = [...currentList, r]
-            this.obWordList.next(newList)
+            this.obDictionaryList.next(newList)
             this.obInputWord.next("");
         }).catch(e => {
-            //alert(e.message.toString());
+            alert(e.message.toString());
         })
     }
 
     addWordItem() {
-        const currentData = this.obCurrentWordInfo.getValue();
+        const currentData = this.obCurrentDictionaryInfo.getValue();
         const wordIdx = currentData.id
         const kor = this.obInputWordItemKor.getValue();
         const eng = this.obInputWordItemEng.getValue();

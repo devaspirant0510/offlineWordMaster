@@ -135,21 +135,19 @@ class View {
     }
 
     wordListDataBinding() {
-        this.vm.obWordList.subscribe((value) => {
+        this.vm.obDictionaryList.subscribe((value) => {
             this.wordList.innerHTML = ""
-            console.log("subscribe obWordList",value);
             value.map(item => {
                 console.log(item);
-                const ctxMenuCallback = (e, imgWrapper, li) => {
-                    e.preventDefault();
-                }
-                const li = WordListItem(item.wordName, ctxMenuCallback, this.vm.obWordListCtxMenuToggle)
-                const menu = li[1]
-                this.wordList.append(li[0]);
-                li[0].addEventListener("click", (e) => {
-                    this.vm.currentWordInfo = item;
+                const DictionaryItem = WordListItem(item.wordName);
+                const li = DictionaryItem.li
+                const menu = DictionaryItem.menu
+                this.wordList.append(li);
+                fromEvent(li,"click").subscribe(async ()=>{
+                    //this.vm.currentWordInfo = item;
                     this.vm.wordTitle = item.wordName;
-                    this.vm.setWordInfoList(item.id,item.wordName);
+                    //this.vm.setWordInfoList(item.id,item.wordName);
+                    await this.vm.selectDictionary(item.id)
                 });
                 const btnUpdate = menu.querySelector(".btn-word-update")
                 const btnDelete = menu.querySelector(".btn-word-delete")
@@ -177,45 +175,45 @@ class View {
 
     wordInfoDataBinding() {
         this.vm.obWordInfoList.subscribe((value) => {
-            this.inputWrapper.style.visibility = ViewState.VISIBLE
-            this.wordToolsWrapper.style.visibility = ViewState.VISIBLE
-
-            this.wordInfoList.innerHTML = "";
-            value.map((item, itemIdx) => {
-                const dictEntity = this.vm.obCurrentWordInfo.getValue();
-                const li = WordItemLayout(item.eng, item.kor, dictEntity.id);
-                this.wordInfoList.append(li[0]);
-                const img = li[1];
-                const ctx = li[2];
-                const btnUpdate = ctx.querySelector("." + CSS_REF.WORD_ITEM_UPDATE_BUTTON)
-                const btnDelete = ctx.querySelector("." + CSS_REF.WORD_ITEM_DELETE_BUTTON)
-                fromEvent(btnUpdate, "click").subscribe(() => {
-
-
-                    const changeEng = prompt("바꿀 eng 값을 입력해주세요", item.eng);
-                    const changeKor = prompt("바꿀 kor 값을 입력해주세요", item.kor);
-                    this.vm.updateWordItem(dictEntity.id, itemIdx, item,changeEng, changeKor);
-
-                    console.log(changeEng, changeKor)
-
-                })
-                fromEvent(btnDelete, "click").subscribe(() => {
-                    const isDelete = confirm("삭제시 복구 못하는데 할거??");
-                    this.vm.removeWordItem(isDelete, dictEntity.id, itemIdx);
-
-
-                })
-                fromEvent(img, "click").subscribe(() => {
-                    const wordId = dictEntity.id;
-                    if (ctx.style.visibility === "visible") {
-                        ctx.style.visibility = "hidden"
-                    } else {
-                        ctx.style.visibility = "visible"
-                    }
-                })
-                this.korRegTag = document.querySelectorAll(".korean")
-                this.engRegTag = document.querySelectorAll(".english")
-            });
+            // this.inputWrapper.style.visibility = ViewState.VISIBLE
+            // this.wordToolsWrapper.style.visibility = ViewState.VISIBLE
+            //
+            // this.wordInfoList.innerHTML = "";
+            // value.map((item, itemIdx) => {
+            //     const dictEntity = this.vm.obCurrentDictionaryInfo.getValue();
+            //     const li = WordItemLayout(item.eng, item.kor, dictEntity.id);
+            //     this.wordInfoList.append(li[0]);
+            //     const img = li[1];
+            //     const ctx = li[2];
+            //     const btnUpdate = ctx.querySelector("." + CSS_REF.WORD_ITEM_UPDATE_BUTTON)
+            //     const btnDelete = ctx.querySelector("." + CSS_REF.WORD_ITEM_DELETE_BUTTON)
+            //     fromEvent(btnUpdate, "click").subscribe(() => {
+            //
+            //
+            //         const changeEng = prompt("바꿀 eng 값을 입력해주세요", item.eng);
+            //         const changeKor = prompt("바꿀 kor 값을 입력해주세요", item.kor);
+            //         this.vm.updateWordItem(dictEntity.id, itemIdx, item,changeEng, changeKor);
+            //
+            //         console.log(changeEng, changeKor)
+            //
+            //     })
+            //     fromEvent(btnDelete, "click").subscribe(() => {
+            //         const isDelete = confirm("삭제시 복구 못하는데 할거??");
+            //         this.vm.removeWordItem(isDelete, dictEntity.id, itemIdx);
+            //
+            //
+            //     })
+            //     fromEvent(img, "click").subscribe(() => {
+            //         const wordId = dictEntity.id;
+            //         if (ctx.style.visibility === "visible") {
+            //             ctx.style.visibility = "hidden"
+            //         } else {
+            //             ctx.style.visibility = "visible"
+            //         }
+            //     })
+            //     this.korRegTag = document.querySelectorAll(".korean")
+            //     this.engRegTag = document.querySelectorAll(".english")
+            // });
         });
         this.vm.obInputWordItemEng.subscribe((value) => {
             this.inputWordItemEng.value = value
@@ -223,10 +221,51 @@ class View {
         this.vm.obInputWordItemKor.subscribe((value) => {
             this.inputWordItemKor.value = value
         });
-        this.vm.obCurrentWordInfo.subscribe((value) => {
-            if (value) {
-                this.wordTitle.textContent = value.wordName;
+        this.vm.obCurrentDictionaryInfo.subscribe((dict) => {
+            if (dict) {
+                this.wordTitle.textContent = dict.wordName;
                 this.inputWrapper.style.visibility = "visible"
+                this.inputWrapper.style.visibility = ViewState.VISIBLE
+                this.wordToolsWrapper.style.visibility = ViewState.VISIBLE
+
+                this.wordInfoList.innerHTML = "";
+                const wordList = dict.data
+                console.log("ob",dict)
+                wordList.map((item, itemIdx) => {
+                    const dictEntity = this.vm.obCurrentDictionaryInfo.getValue();
+                    const li = WordItemLayout(item.eng, item.kor, dictEntity.id);
+                    this.wordInfoList.append(li[0]);
+                    const img = li[1];
+                    const ctx = li[2];
+                    const btnUpdate = ctx.querySelector("." + CSS_REF.WORD_ITEM_UPDATE_BUTTON)
+                    const btnDelete = ctx.querySelector("." + CSS_REF.WORD_ITEM_DELETE_BUTTON)
+                    fromEvent(btnUpdate, "click").subscribe(() => {
+
+
+                        const changeEng = prompt("바꿀 eng 값을 입력해주세요", item.eng);
+                        const changeKor = prompt("바꿀 kor 값을 입력해주세요", item.kor);
+                        this.vm.updateWordItem(dictEntity.id, itemIdx, item,changeEng, changeKor);
+
+                        console.log(changeEng, changeKor)
+
+                    })
+                    fromEvent(btnDelete, "click").subscribe(() => {
+                        const isDelete = confirm("삭제시 복구 못하는데 할거??");
+                        this.vm.removeWordItem(isDelete, dictEntity.id, itemIdx);
+
+
+                    })
+                    fromEvent(img, "click").subscribe(() => {
+                        const wordId = dictEntity.id;
+                        if (ctx.style.visibility === "visible") {
+                            ctx.style.visibility = "hidden"
+                        } else {
+                            ctx.style.visibility = "visible"
+                        }
+                    })
+                    this.korRegTag = document.querySelectorAll(".korean")
+                    this.engRegTag = document.querySelectorAll(".english")
+                });
             }
 
         })

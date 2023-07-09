@@ -2,6 +2,7 @@ import Service from "./Service";
 import DictionaryEntity from "../Data/entity/DictionaryEntity";
 import WordEntity from "../Data/entity/WordEntity";
 import WordNames from "./model/WordNames";
+import {expectedError} from "@babel/core/lib/errors/rewrite-stack-trace";
 const tempDic = new DictionaryEntity(
         "test",
     [
@@ -53,8 +54,26 @@ describe("addWord",()=>{
         const addWordFunction = async () => {
             await service.addWord("abc");
         };
-
         await expect(addWordFunction).rejects.toThrow(Error);
     })
+})
 
+describe("read Dictionary",()=>{
+    let service;
+    beforeEach(()=>{
+        service = new Service(repo);
+
+    })
+    it("read All Dictionary",async ()=>{
+        const data = await service.getAllDictionary()
+        console.log(data)
+        expect(data).toEqual(repo.mockData)
+    })
+    it("read First Dictionary",async ()=>{
+        const data = await service.getFirstDictionary()
+        if(data){
+            console.log(data)
+            expect(data).toEqual(repo.mockData[0])
+        }
+    })
 })
