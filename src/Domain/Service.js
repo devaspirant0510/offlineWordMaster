@@ -1,5 +1,6 @@
 import WordEntity from "../Data/entity/WordEntity";
 import Repository from "../Data/repository/Repository"
+import WordNames from "./model/WordNames";
 
 class Service {
      /**
@@ -13,17 +14,14 @@ class Service {
         this.repo = repository
     }
     /**
-     * @returns {Promise<Array<{wordName:string,id:number}>>}
+     * @returns {Promise<Array<WordNames>>}
      */
     async getWordList() {
-        /** @type {Array<{wordName:string,id:number}>} */
+        /** @type {Array<WordNames>} */
         const wordNames = []
         const getAllWord = await this.repo.readAll();
         getAllWord.map(value => {
-            wordNames.push({
-                wordName: value.wordName,
-                id: value.id
-            });
+            wordNames.push(new WordNames(value.id,value.wordName));
         })
         return wordNames
     }
@@ -54,6 +52,11 @@ class Service {
         return await this.repo.removeWordHeader(id);
     }
 
+    /**
+     *
+     * @param {string} wordName
+     * @returns {Promise<DictionaryEntity>}
+     */
     async addWord(wordName) {
         const readAll = await this.repo.readAll();
         // 중복된 값이 있는지 확인

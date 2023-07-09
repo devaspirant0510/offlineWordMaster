@@ -6,6 +6,7 @@ class BaseViewModel{
         // }
         // BaseViewModel.instance = this;
         this.mediator = mediator;
+        this.a = 2;
         // this.rootObIsTest = new BehaviorSubject(false);
         // this.rootSettingDom();
         // this.rootSettingEvent();

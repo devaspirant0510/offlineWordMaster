@@ -150,22 +150,49 @@ class WordTestView extends BaseView{
             console.log(answers);
         })
         this.vm.obResultData.subscribe(data=>{
-            for(let i=0; i<data.question.length; i++){
-                const tr = document.createElement("tr");
-                for (let j=0; j<3; j++){
-                    const td = document.createElement("td");
-                    if(j===0){
-                        td.textContent = data.question[i]; 
-                    }else if(j===1){
-                        td.textContent = data.answer[i]; 
-                    }else{
-                        td.textContent = data.my[i]; 
+            if(data.result){
+                const result = data.result;
+                for(let i=0; i<data.question.length; i++){
+                    const tr = document.createElement("tr");
+                    for (let j=0; j<4; j++){
+                        const td = document.createElement("td");
+                        if(j===0){
+                            td.textContent = data.question[i];
+                        }else if(j===1){
+                            td.textContent = data.answer[i];
+                        }else if(j===2){
+                            td.textContent = data.my[i];
+                            if(result[i]===false){
+                                td.textContent+="→ "
+                                const tempText = document.createElement("span");
+                                tempText.textContent = data.answer[i]
+                                tempText.style.color = "#00ff00";
+                                td.append(tempText)
+                                td.style.color = "#ff0000"
+                            }
+                        }else{
+                            if(result[i]===true){
+                                td.textContent = "O"
+                                td.style.color = "#00ff00";
+                            }
+                            else{
+                                td.textContent = "X"
+                                td.style.color = "#ff0000";
+                            }
+
+                        }
+                        tr.appendChild(td)
                     }
-                    tr.appendChild(td)
+                    this.tableResult.append(tr);
+
                 }
-                this.tableResult.append(tr);
+                const resultTR = document.createElement("tr");
+                resultTR.style.columnSpan = "4"
+                resultTR.textContent = "수고하셨습니다. 당신의 점수는 100점만점에 "+(data.result.filter(v=>v===true).length/data.result.length)*100
+                this.tableResult.append(resultTR)
 
             }
+
 
 
         })

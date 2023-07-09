@@ -9,6 +9,7 @@ class DictionaryEntity{
     constructor(wordName,data){
         this.wordName = wordName;
         this.data = data;
+        this.id;
     }
 }
 

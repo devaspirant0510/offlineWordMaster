@@ -1,6 +1,7 @@
 import {Subject, BehaviorSubject, pipe, map} from "rxjs"
 import Service from "../Domain/Service"
 import WordEntity from "../Data/entity/WordEntity";
+import Mediator from "./Mediator";
 import DictionaryEntity from "../Data/entity/DictionaryEntity";
 import BaseViewModel from "../utils/Base/BaseViewModel";
 
@@ -8,9 +9,11 @@ class ViewModel extends BaseViewModel{
     /**
      *
      * @param {Service} service
+     * @param {Mediator} mediator
      */
     constructor(service,mediator) {
         super(mediator);
+        console.log(this.a)
         this.service = service
         mediator.register(this)
         /**@type {BehaviorSubject<Array<{wordName:string,id:number}>>} */
@@ -99,7 +102,7 @@ class ViewModel extends BaseViewModel{
 
     addWord(wordName) {
         if (wordName === "" || wordName === undefined) {
-            alert("내용을 입력해주세요");
+            //alert("내용을 입력해주세요");
             return;
         }
         this.service.addWord(wordName).then(r => {
@@ -111,7 +114,7 @@ class ViewModel extends BaseViewModel{
             this.obWordList.next(newList)
             this.obInputWord.next("");
         }).catch(e => {
-            alert(e.message.toString());
+            //alert(e.message.toString());
         })
     }
 

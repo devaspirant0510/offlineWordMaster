@@ -20,6 +20,7 @@ class WordTestViewModel extends BaseViewModel {
         this.sm = new StateManger();
         this.testData = [];
         this.answerData =[]
+        this.userResult =[];
         this.obViewState = this.sm.addState(new BehaviorSubject(TestViewState.OPTION))
         /** @type {BehaviorSubject<boolean>} 테스트 부모 컨테이너 */
         this.obTestVisible = this.sm.addState(new BehaviorSubject(false));
@@ -110,20 +111,22 @@ class WordTestViewModel extends BaseViewModel {
     submitCheck(){
         let okCount = 0;
         const userInputs = this.obUserAnswers.getValue();
-        for(let i=0; i<5; i++){
+        for(let i=0; i<userInputs.length; i++){
             if(this.answerData[i] === userInputs[i]){
                 okCount++;
+                this.userResult.push(true)
+            }else{
+                this.userResult.push(false)
             }
         }
-        alert(`${okCount} 개 맞음`)
         this.obViewState.next(TestViewState.RESULT);
         this.obResultData.next({
             question:this.testData,
             answer:this.answerData,
-            my:this.obUserAnswers.getValue()
+            my:this.obUserAnswers.getValue(),
+            result:this.userResult
         })
     }
-
 }
 
 export default WordTestViewModel;
