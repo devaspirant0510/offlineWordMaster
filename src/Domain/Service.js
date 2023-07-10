@@ -95,7 +95,8 @@ class Service {
     async addWord(wordName) {
         const readAll = await this.repo.readAll();
         // 중복된 값이 있는지 확인
-        const validName = readAll.filter(item => item.wordName === wordName)
+        // const validName = readAll.filter(item => item.wordName === wordName)
+        let validName = []
         if (validName.length === 0) {
             // word 추가후 추가한 데이터 리턴
             const resultIndex = await this.repo.addWordHeader(wordName)

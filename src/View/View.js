@@ -2,6 +2,7 @@ import ViewModel from "../ViewModel/ViewModel";
 import {fromEvent, scan, pipe, tap, merge, mapTo, map} from "rxjs"
 import {CSS_REF, ViewState} from "../utils/Constant"
 import {WordContextMenu, WordItemLayout, WordListItem} from "./layouts/WordList"
+import {displayNone, displayShowen,getDisplayState,DISPLAY_STATE} from "../utils/ViewUtils";
 
 class View {
     /**
@@ -122,14 +123,14 @@ class View {
         })
         this.vm.rootObIsTest.subscribe((isTest)=>{
             console.log(isTest);
-            
-            if(!isTest){
-                this.ctTestView.style.display = "none"
-                this.cTmainView.style.display = "block";
-                
-            }else{
+
+            if (isTest) {
                 this.ctTestView.style.display = "block"
                 this.cTmainView.style.display = "none";
+            } else {
+                this.ctTestView.style.display = "none"
+                this.cTmainView.style.display = "block";
+
             }
         })
     }
@@ -157,10 +158,10 @@ class View {
                     this.vm.updateWord(item.wordName, item.id, updateValue)
 
                 })
-                fromEvent(btnDelete, "click").subscribe(() => {
+                fromEvent(btnDelete, "click").subscribe(async () => {
                     console.log("remove click");
                     const deleteValue = confirm("삭제하면 복구못합니다 진짜 할거야?")
-                    this.vm.removeWord(deleteValue, item.id)
+                    await this.vm.removeWord(deleteValue, item.id)
 
                 })
             });
@@ -174,47 +175,6 @@ class View {
     }
 
     wordInfoDataBinding() {
-        this.vm.obWordInfoList.subscribe((value) => {
-            // this.inputWrapper.style.visibility = ViewState.VISIBLE
-            // this.wordToolsWrapper.style.visibility = ViewState.VISIBLE
-            //
-            // this.wordInfoList.innerHTML = "";
-            // value.map((item, itemIdx) => {
-            //     const dictEntity = this.vm.obCurrentDictionaryInfo.getValue();
-            //     const li = WordItemLayout(item.eng, item.kor, dictEntity.id);
-            //     this.wordInfoList.append(li[0]);
-            //     const img = li[1];
-            //     const ctx = li[2];
-            //     const btnUpdate = ctx.querySelector("." + CSS_REF.WORD_ITEM_UPDATE_BUTTON)
-            //     const btnDelete = ctx.querySelector("." + CSS_REF.WORD_ITEM_DELETE_BUTTON)
-            //     fromEvent(btnUpdate, "click").subscribe(() => {
-            //
-            //
-            //         const changeEng = prompt("바꿀 eng 값을 입력해주세요", item.eng);
-            //         const changeKor = prompt("바꿀 kor 값을 입력해주세요", item.kor);
-            //         this.vm.updateWordItem(dictEntity.id, itemIdx, item,changeEng, changeKor);
-            //
-            //         console.log(changeEng, changeKor)
-            //
-            //     })
-            //     fromEvent(btnDelete, "click").subscribe(() => {
-            //         const isDelete = confirm("삭제시 복구 못하는데 할거??");
-            //         this.vm.removeWordItem(isDelete, dictEntity.id, itemIdx);
-            //
-            //
-            //     })
-            //     fromEvent(img, "click").subscribe(() => {
-            //         const wordId = dictEntity.id;
-            //         if (ctx.style.visibility === "visible") {
-            //             ctx.style.visibility = "hidden"
-            //         } else {
-            //             ctx.style.visibility = "visible"
-            //         }
-            //     })
-            //     this.korRegTag = document.querySelectorAll(".korean")
-            //     this.engRegTag = document.querySelectorAll(".english")
-            // });
-        });
         this.vm.obInputWordItemEng.subscribe((value) => {
             this.inputWordItemEng.value = value
         });
@@ -256,11 +216,10 @@ class View {
 
                     })
                     fromEvent(img, "click").subscribe(() => {
-                        const wordId = dictEntity.id;
-                        if (ctx.style.visibility === "visible") {
-                            ctx.style.visibility = "hidden"
+                        if (getDisplayState(ctx) === DISPLAY_STATE.SHOWEN) {
+                            displayNone(ctx)
                         } else {
-                            ctx.style.visibility = "visible"
+                            displayShowen(ctx)
                         }
                     })
                     this.korRegTag = document.querySelectorAll(".korean")

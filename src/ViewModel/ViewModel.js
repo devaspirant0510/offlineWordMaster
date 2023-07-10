@@ -139,8 +139,14 @@ class ViewModel extends BaseViewModel{
         const wordIdx = currentData.id
         const kor = this.obInputWordItemKor.getValue();
         const eng = this.obInputWordItemEng.getValue();
-        this.service.addWordItem(wordIdx, kor, eng).then(wordEntitys => {
-            this.obWordInfoList.next(wordEntitys);
+        this.service.addWordItem(wordIdx, kor, eng).then(wordEntity => {
+            let dict = this.obCurrentDictionaryInfo.getValue()
+            if(dict){
+                console.log("add wor item",wordEntity)
+                dict = {...dict,data:wordEntity}
+                this.obCurrentDictionaryInfo.next(dict)
+
+            }
 
         })
     }
@@ -155,6 +161,7 @@ class ViewModel extends BaseViewModel{
             return;
         }
         this.service.removeWordItem(wordId, wordItemId).then(wordList => {
+            let dict = this.obCurrentDictionaryInfo.getValue();
             this.obWordInfoList.next(wordList);
         }).catch(e => {
             alert(e.message)

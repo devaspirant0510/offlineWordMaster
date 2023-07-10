@@ -31,17 +31,6 @@ class BaseViewModel{
         })
     }
     rootSubscribe(){
-        this.rootObIsTest.subscribe((isTest)=>{
-            console.log(isTest);
-            
-            if(!isTest){
-                this.ctTestView.style.display = "none"
-                this.cTmainView.style.display = "block";
-            }else{
-                this.ctTestView.style.display = "block"
-                this.cTmainView.style.display = "none";
-            }
-        })
     }
 }
 

@@ -90,7 +90,7 @@ export const WordItemLayout=(eng,kor,id)=>{
         CSS_REF.WORD_ITEM_UPDATE_BUTTON
     );
     div.append(li,ctx,img);
-    ctx.style.visibility = "hidden";
+    ctx.style.display = "none";
     return [div,img,ctx];
 }
 

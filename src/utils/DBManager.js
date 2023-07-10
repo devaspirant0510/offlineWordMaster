@@ -23,8 +23,8 @@ class DBManager {
             requset.onsuccess = (e)=>{
                 resolve(e.target.result)
             }
-            requset.onerror = ()=>{
-                reject(new Error("error"))
+            requset.onerror = (e)=>{
+                reject(new Error(e.message))
             }
         })
     }

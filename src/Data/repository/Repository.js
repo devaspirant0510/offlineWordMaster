@@ -3,10 +3,7 @@ import DBManager from "../../utils/DBManager"
 import DictionaryEntity from "../entity/DictionaryEntity"
 
 class Repository {
-    /**
-     * @param {string} wordTitle
-     */
-    constructor(wordTitle) {
+    constructor() {
         this.dm = new DBManager()
     }
 
@@ -22,10 +19,14 @@ class Repository {
     }
 
     async addWordHeader(wordName) {
-        let store = await this.dm.getObjectStore2()
-        const data = new DictionaryEntity(wordName, [])
-        const addReq = store.add(data)
-        return await this.dm.transactionMapper(addReq);
+        try{
+            let store = await this.dm.getObjectStore2()
+            const data = new DictionaryEntity(wordName, [])
+            const addReq = store.add(data)
+            return await this.dm.transactionMapper(addReq);
+        }catch (e){
+            console.log(e)
+        }
     }
 
     async updateWordHeader(wordId, wordName) {
@@ -43,9 +44,13 @@ class Repository {
      * @returns {Promise<DictionaryEntity[]>}
      */
     async removeWordHeader(wordId) {
-        const store = await this.dm.getObjectStore2();
-        store.delete(wordId);
-        return await this.dm.transactionMapper(store.getAll());
+        try{
+            const store = await this.dm.getObjectStore2();
+            store.delete(wordId);
+            return await this.dm.transactionMapper(store.getAll());
+        }catch (e){
+            console.log(e)
+        }
     }
 
     /**
@@ -54,9 +59,13 @@ class Repository {
      * @returns {Promise<DictionaryEntity>}
      */
     async readOne(index) {
-        let store = await this.dm.getObjectStore2();
-        store = store.get(index);
-        return await this.dm.transactionMapper(store)
+        try{
+            let store = await this.dm.getObjectStore2();
+            store = store.get(index);
+            return await this.dm.transactionMapper(store)
+        }catch (e){
+            console.log(e)
+        }
     }
 
     /**
@@ -72,32 +81,49 @@ class Repository {
     }
 
     async addWordItem(wordIndex, wordEntity) {
-        const store = await this.dm.getObjectStore2()
-        const getReq = store.get(wordIndex);
-        const resGetIdx = await this.dm.transactionMapper(getReq);
-        console.log(resGetIdx);
-        resGetIdx.data = [...resGetIdx.data, wordEntity]
-        store.put(resGetIdx)
-        return resGetIdx.data;
+        try {
+            const store = await this.dm.getObjectStore2()
+            const getReq = store.get(wordIndex);
+            const resGetIdx = await this.dm.transactionMapper(getReq);
+            console.log(resGetIdx);
+            resGetIdx.data = [...resGetIdx.data, wordEntity]
+            store.put(resGetIdx)
+            return resGetIdx.data;
+        }
+        catch (e){
+            console.log(e)
+        }
     }
 
     async removeWordItem(wordId, wordEntity) {
-        const store = await this.dm.getObjectStore2();
-        const putReq =store.put(wordEntity);
-        return await this.dm.transactionMapper(putReq);
+        try {
+            const store = await this.dm.getObjectStore2();
+            const putReq =store.put(wordEntity);
+            return await this.dm.transactionMapper(putReq);
+        }catch (e){
+            console.log(e)
+        }
     }
     async getWordItemList(wordId){
-        const store = await this.dm.getObjectStore2();
-        const getOne = store.get(wordId);
-        const result = await this.dm.transactionMapper(getOne);
-        return result.data;
+        try{
+            const store = await this.dm.getObjectStore2();
+            const getOne = store.get(wordId);
+            const result = await this.dm.transactionMapper(getOne);
+            return result.data;
+        }catch (e){
+            console.log(e)
+        }
     }
     async updateWordItemList(wordId,wordList){
-        const store = await  this.dm.getObjectStore2();
-        const getOne = store.get(wordId);
-        const res = await this.dm.transactionMapper(getOne)
-        const resultEntity = {...res,data:wordList};
-        return await this.dm.transactionMapper(store.put(resultEntity))
+        try {
+            const store = await  this.dm.getObjectStore2();
+            const getOne = store.get(wordId);
+            const res = await this.dm.transactionMapper(getOne)
+            const resultEntity = {...res,data:wordList};
+            return await this.dm.transactionMapper(store.put(resultEntity))
+        }catch (e){
+            console.log(e)
+        }
 
     }
 }
