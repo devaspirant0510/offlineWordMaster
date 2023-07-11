@@ -1,9 +1,18 @@
+@font-face {
+    font-family: 'ONE-Mobile-POP';
+    src: url("font/ONEMobilePOP.ttf"); /**url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-POP.woff') format('woff');*/
+    font-weight: normal;
+    font-style: normal;
+}
+input, textarea, select { font-family:inherit; }
 body{
     margin: 0;
     padding: 20px;
     background-color: #f2f2f2;
     color: #333333;
+    font-family: "One-Mobile-POP",serif;
 }
+
 #main-container{
     display: grid;
     grid-template-columns: 1fr 4fr;
@@ -21,6 +30,7 @@ body{
 }
 
 #nav-container{
+    background-color: #fff;
     grid-row: 1/1;
     grid-column: 1/span2
 }
@@ -74,7 +84,7 @@ ul{
     display: flex;
 
 }
-#li-word-list>li:focus,#li-word-list>li:active{
+#li-word-list>li:focus,#li-word-list>li:active,.active{
     background-color: #ebebeb;
     color:#333;
     font-weight: bold;
