@@ -2,7 +2,14 @@ import ViewModel from "../ViewModel/ViewModel";
 import {fromEvent, scan, pipe, tap, merge, mapTo, map} from "rxjs"
 import {CSS_REF, ViewState} from "../utils/Constant"
 import {WordContextMenu, WordItemLayout, WordListItem} from "./layouts/WordList"
-import {displayNone, displayShowen,getDisplayState,DISPLAY_STATE} from "../utils/ViewUtils";
+import {
+    displayNone,
+    displayShowen,
+    getDisplayState,
+    DISPLAY_STATE,
+    clearInnerHtml,
+    setCheckedElement, getCheckedState, setEnableElement, setDisableElement
+} from "../utils/ViewUtils";
 
 class View {
     /**
@@ -57,11 +64,22 @@ class View {
             }, {kor: false, eng: false}),
             tap(state => {
                 console.log(state);
-
                 if (state.kor === false && state.eng === false) {
+                    // 둘다 선택을 안한 상황일때 => checkbox 둘다 활성화
+                    setEnableElement(this.btnShowEng)
+                    setEnableElement(this.btnShowKor)
+
                     this.korRegTag.forEach(el => el.style.visibility = "visible")
                     this.engRegTag.forEach(el => el.style.visibility = "visible")
                 } else {
+                    // show kor 을 누를시 show eng 는 비활성화
+                    if(state.kor){
+                        setDisableElement(this.btnShowEng)
+                    }
+                    // show eng 를 누를시 show kor 은 비활성화
+                    else if(state.eng){
+                        setDisableElement(this.btnShowKor)
+                    }
                     this.korRegTag.forEach(el => el.style.visibility = state.kor ? "visible" : "hidden")
                     this.engRegTag.forEach(el => el.style.visibility = state.eng ? "visible" : "hidden")
 
@@ -78,7 +96,7 @@ class View {
         this.wordList = document.querySelector("#li-word-list");
         /**@type {HTMLElement} wordInfo 제목*/
         this.wordTitle = document.querySelector("#h2-word-title")
-        /**@type {HTMLElement} 추가할 word input*/
+        /**@type {HTMLInputElement} 추가할 word input*/
         this.inputWordName = document.querySelector("#input-word-name");
         /**@type {HTMLElement} 추가할 word 버튼*/
         this.btnAddWord = document.querySelector("#btn-add-word");
@@ -86,9 +104,9 @@ class View {
         this.wordInfoList = document.querySelector("#li-word-info-list");
         /** @type {HTMLElement} wordinfo 에서 word item 추가 버튼*/
         this.btnWordItemAdd = document.querySelector("#btn-add-word-item")
-        /** @type {HTMLElement} wordinfo 에서 korea input */
+        /** @type {HTMLInputElement} wordinfo 에서 korea input */
         this.inputWordItemKor = document.querySelector("#input-word-item-kor")
-        /** @type {HTMLElement} wordinfo 에서 english input */
+        /** @type {HTMLInputElement} wordinfo 에서 english input */
         this.inputWordItemEng = document.querySelector("#input-word-item-eng")
 
         /** @type {HTMLElement} wordinfo 에서 english input */
@@ -114,7 +132,6 @@ class View {
         /** @type {HTMLElement}*/
         this.btnTestExit = document.querySelector("#btn-test-exit");
         fromEvent(this.btnTest,"click").subscribe(isTest=>{
-            console.log("test exit");
             this.vm.rootObIsTest.next(!this.vm.rootObIsTest.getValue());
         })
         fromEvent(this.btnTestExit,"click").subscribe(()=>{
@@ -149,6 +166,14 @@ class View {
                     this.vm.wordTitle = item.wordName;
                     //this.vm.setWordInfoList(item.id,item.wordName);
                     await this.vm.selectDictionary(item.id)
+                    const currentLi = Array.from(this.wordList.children)
+                    currentLi.map((item,index)=>{
+                        if (li.wordName===item.textContent){
+
+                        }
+                        console.log("item",item)
+                    })
+
                 });
                 const btnUpdate = menu.querySelector(".btn-word-update")
                 const btnDelete = menu.querySelector(".btn-word-delete")
@@ -165,6 +190,13 @@ class View {
 
                 })
             });
+            const li = Array.from(this.wordList.children)
+            li.map((item,index)=>{
+                if(index===0){
+                    item.classList.add("active")
+                }
+            })
+
         });
         this.vm.obInputWord.subscribe((value) => {
             if (value !== undefined) {
@@ -184,11 +216,9 @@ class View {
         this.vm.obCurrentDictionaryInfo.subscribe((dict) => {
             if (dict) {
                 this.wordTitle.textContent = dict.wordName;
-                this.inputWrapper.style.visibility = "visible"
                 this.inputWrapper.style.visibility = ViewState.VISIBLE
                 this.wordToolsWrapper.style.visibility = ViewState.VISIBLE
-
-                this.wordInfoList.innerHTML = "";
+                clearInnerHtml(this.wordInfoList)
                 const wordList = dict.data
                 console.log("ob",dict)
                 wordList.map((item, itemIdx) => {

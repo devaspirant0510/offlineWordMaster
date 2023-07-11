@@ -25,11 +25,11 @@ class WordTestViewModel extends BaseViewModel {
         /** @type {BehaviorSubject<boolean>} 테스트 부모 컨테이너 */
         this.obTestVisible = this.sm.addState(new BehaviorSubject(false));
         /** 
-         *  @typedef testoption
+         *  @typedef testOption
          *  @property {string} option
          *  @property {string} main
         */
-        /** @type {BehaviorSubject<testoption>} 테스트 옵션 선택 컨터이네 뷰 유무*/
+        /** @type {BehaviorSubject<testOption>} 테스트 옵션 선택 컨터이네 뷰 유무*/
         this.obCtTestOpVisible = this.sm.addState(new BehaviorSubject({ option: true, main: false }));
 
         /** @type {BehaviorSubject<boolean>} 테스트 옵션 kor->eng 선택 유무*/
@@ -46,10 +46,16 @@ class WordTestViewModel extends BaseViewModel {
         this.obNextWordOpt = this.sm.addState(new BehaviorSubject(false));
         /** @type {BehaviorSubject<string[]>} user input 한 결과의 리스트 */
         this.obUserAnswers = this.sm.addState(new BehaviorSubject([]));
-        /** @type {BehaviorSubject<string[]>} user input tag 데이터 바인딩*/
+        /** @type {BehaviorSubject<string>} user input tag 데이터 바인딩*/
         this.obUserInput = this.sm.addState(new BehaviorSubject(""));
-
-        this.obResultData = this.sm.addState(new BehaviorSubject({question:[],answer:[],my:[]}))
+        /** @typedef resultState
+         * @param {string[]} question
+         * @param {string[]} answer
+         * @param {string[]} my
+         * @param {string[]} result
+         * */
+        /** @type {BehaviorSubject<resultState>} user input tag 데이터 바인딩*/
+        this.obResultData = this.sm.addState(new BehaviorSubject({question:[],answer:[],my:[],result:[]}))
 
 
 

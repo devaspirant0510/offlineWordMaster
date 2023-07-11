@@ -3,6 +3,7 @@ import BaseView from "../utils/Base/BaseView"
 import WordTestViewModel from "../ViewModel/WordTestViewModel";
 import {displayNone,displayShowen} from "../utils/ViewUtils";
 import { TestViewState } from "../ViewModel/model/TestViewState";
+import {WordTestResultHeader} from "./layouts/WordTestResultHeader";
 
 class WordTestView extends BaseView{
     /**
@@ -151,7 +152,11 @@ class WordTestView extends BaseView{
         })
         this.vm.obResultData.subscribe(data=>{
             if(data.result){
+                console.log(data.result)
+                console.log(data.answer)
                 const result = data.result;
+                this.tableResult.innerHTML = ""
+                this.tableResult.append(WordTestResultHeader())
                 for(let i=0; i<data.question.length; i++){
                     const tr = document.createElement("tr");
                     for (let j=0; j<4; j++){
