@@ -1,0 +1,13 @@
+@media (max-width: 768px) {
+    /* 모바일 화면 크기에 대한 스타일 수정 */
+    #nav-btn-menu{
+        display: block;
+    }
+    #side-container{
+        display: none;
+    }
+    #main-container{
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+}

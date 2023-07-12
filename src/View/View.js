@@ -92,6 +92,8 @@ class View {
     settingDom() {
         /**@type {HTMLElement} wordList 컨테이너*/
         this.mainSection = document.querySelector("#section-word-list");
+        this.ctSideBar = document.querySelector("#side-container")
+        this.ctSideBar.classList.toggle("show-side-menu")
         /**@type {HTMLElement} wordList 의 리스트*/
         this.wordList = document.querySelector("#li-word-list");
         /**@type {HTMLElement} wordInfo 제목*/
@@ -150,30 +152,24 @@ class View {
 
             }
         })
+
+        this.btnNavMenu = document.querySelector("#nav-btn-menu");
+        this.btnNavMenu.addEventListener("click",()=>{
+            this.ctSideBar.classList.toggle("show-side-menu")
+        })
     }
 
     wordListDataBinding() {
         this.vm.obDictionaryList.subscribe((value) => {
             this.wordList.innerHTML = ""
-            value.map(item => {
+            value.map((item,idx) => {
                 console.log(item);
                 const DictionaryItem = WordListItem(item.wordName);
                 const li = DictionaryItem.li
                 const menu = DictionaryItem.menu
                 this.wordList.append(li);
                 fromEvent(li,"click").subscribe(async ()=>{
-                    //this.vm.currentWordInfo = item;
-                    this.vm.wordTitle = item.wordName;
-                    //this.vm.setWordInfoList(item.id,item.wordName);
-                    await this.vm.selectDictionary(item.id)
-                    const currentLi = Array.from(this.wordList.children)
-                    currentLi.map((item,index)=>{
-                        if (li.wordName===item.textContent){
-
-                        }
-                        console.log("item",item)
-                    })
-
+                    await this.vm.selectDictionary(item.id,idx)
                 });
                 const btnUpdate = menu.querySelector(".btn-word-update")
                 const btnDelete = menu.querySelector(".btn-word-delete")
@@ -190,12 +186,6 @@ class View {
 
                 })
             });
-            const li = Array.from(this.wordList.children)
-            li.map((item,index)=>{
-                if(index===0){
-                    item.classList.add("active")
-                }
-            })
 
         });
         this.vm.obInputWord.subscribe((value) => {
@@ -221,6 +211,18 @@ class View {
                 clearInnerHtml(this.wordInfoList)
                 const wordList = dict.data
                 console.log("ob",dict)
+                const liTag = Array.from(this.wordList.children)
+                liTag.map((liItem,index)=>{
+                    if(index===dict.index){
+                        liItem.classList.add("active")
+
+                    }else{
+
+                        liItem.classList.remove("active")
+                    }
+
+
+                })
                 wordList.map((item, itemIdx) => {
                     const dictEntity = this.vm.obCurrentDictionaryInfo.getValue();
                     const li = WordItemLayout(item.eng, item.kor, dictEntity.id);

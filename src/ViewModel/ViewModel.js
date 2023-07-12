@@ -8,6 +8,7 @@ import StateManager from "../utils/StateManager";
 import {MapperWordNames} from "../Domain/Mapper/Mapper";
 import Dictionary from "./model/Dictionary";
 import WordNames from "../Domain/model/WordNames";
+import {EntityToModel} from "./Mapper/Mapper";
 
 class ViewModel extends BaseViewModel{
     /**
@@ -39,14 +40,6 @@ class ViewModel extends BaseViewModel{
         this.rootObIsTest = this.sm.addState(new BehaviorSubject(false));
     }
 
-    set wordTitle(wordName) {
-        this.obWordTitile.next(wordName)
-    }
-
-    set currentWordInfo(wordEntity) {
-        this.obCurrentDictionaryInfo.next(wordEntity)
-    }
-
     /**
      * 첫 화면로딩시 Dictionary 정보 가져오고 Dictionary 가 있을시
      * 천번째 Dictionary 를 메인화면에 보여줌
@@ -57,7 +50,7 @@ class ViewModel extends BaseViewModel{
         this.obDictionaryList.next(readWordList)
         const readFirstDictionary = await this.service.getFirstDictionary();
         if(readFirstDictionary){
-            this.obCurrentDictionaryInfo.next(new Dictionary(readFirstDictionary.id,readFirstDictionary.wordName,readFirstDictionary.data))
+            await this.selectDictionary(readFirstDictionary.id,0)
             this.obWordInfoList.next(readFirstDictionary.data)
         }
     }
@@ -70,22 +63,16 @@ class ViewModel extends BaseViewModel{
         await this.service.addWordItem(id,"도착","departure")
     }
 
-    setWordInfoList(index) {
-        this.service.getWordInfos(index).then(r => {
-            if (r) {
-                this.obWordInfoList.next(r)
-            }
-        })
-    }
-
     /**
      * 유저가 dictionary 리스트에서 단어를 선택했을때 해당 단어정보를 가져와 observer 변수에 세팅
      * @param {number} id  Dictionary Entity 의 key 값
+     * @param {number} index
      */
-    async selectDictionary(id){
-        const getOneDict = await this.service.getDictionaryById(id)
+    async selectDictionary(id,index){
+        const getOneDict = await this.service.getDictionaryById(id);
         if(getOneDict){
-            this.obCurrentDictionaryInfo.next(getOneDict);
+            const convertModel = EntityToModel(getOneDict,index);
+            this.obCurrentDictionaryInfo.next(convertModel);
         }
 
     }
