@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <style>
+    #nav-container {
+      position: relative;
+    }
+
+    #side-menu {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #f0f0f0;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    #main-content {
+      /* 메인 컨텐츠 스타일 */
+    }
+    .show-side-menu {
+      transform: translateX(0%) !important;
+    }
+  </style>
+</head>
+<body>
+<nav id="nav-container">
+  <button id="nav-btn-menu">
+    =
+  </button>
+  <div id="side-menu" >
+    adsfsadf
+    <!-- 사이드 메뉴 내용 -->
+  </div>
+  <div id="main-content">
+    asdfasdf
+    <!-- 메인 컨텐츠 내용 -->
+  </div>
+</nav>
+<script>
+  const navBtnMenu = document.getElementById('nav-btn-menu');
+  const sideMenu = document.getElementById('side-menu');
+
+  navBtnMenu.addEventListener('click', function() {
+    sideMenu.classList.toggle('show-side-menu');
+  });
+</script>
+</body>
+</html>
