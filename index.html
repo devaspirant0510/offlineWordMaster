@@ -34,10 +34,10 @@
         </aside>
         <article id="article-container">
             <h2 id="h2-word-title"></h2>
-            <div id="container-word-tools">
-                <button id="dummy">dummy</button>
+            <div class="white-card-view" id="container-word-tools">
+                <button id="dummy" style="display: none">dummy</button>
 
-                <button> shuffle</button>
+                <button id="btn-shuffle-word"> shuffle</button>
                 <label for="btn-show-kor">
                     show kor
                 </label>
@@ -50,7 +50,7 @@
                     test
                 </button>
             </div>
-            <ol id="li-word-info-list">
+            <ol class="white-card-view" id="li-word-info-list">
             </ol>
             <div id="input-wrapper">
                 <input type="text" placeholder="Enter eng" id="input-word-item-eng" />
@@ -58,10 +58,10 @@
                 <button id="btn-add-word-item">Submit</button>
             </div>
         </article>
-        <article id="test-container" style="display: none">
-            <h2 id="h2-word-title">테스트</h2>
+        <article id="test-container" style="display: none" class="card-view">
+            <h2 class="h2-title">테스트</h2>
             <button id="btn-test-exit">exit</button>
-            <div id="ct-test-option">
+            <div id="ct-test-option" class="white-card-view">
                 <div>
                     <h3 style="display: inline-block">testType :</h3>
                     <label for="op-kor-eng">
@@ -88,12 +88,12 @@
                     <button id="btn-test-option-start">start</button>
                 </div>
             </div>
-            <div id="ct-test">
+            <div id="ct-test" class="white-card-view">
                 <div id="test-progress">1/20</div>
                 <div id="test-question">
                 </div>
                 <label for="test-answer">
-                    <input id="test-answer"/>
+                    <input id="test-answer" placeholder="enter answer.."/>
                 </label>
                 <button id="btn-word-answer">다음</button>
             </div>
