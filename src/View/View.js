@@ -10,6 +10,7 @@ import {
     clearInnerHtml,
     setCheckedElement, getCheckedState, setEnableElement, setDisableElement
 } from "../utils/ViewUtils";
+import {extractNumberFromId} from "./utils/Utils";
 
 class View {
     /**
@@ -41,8 +42,8 @@ class View {
             this.vm.obInputWordItemEng.next(e.target.value)
         });
 
-        fromEvent(this.btnAddWord, "click").subscribe(() => {
-            this.vm.addWord(this.vm.obInputWord.getValue())
+        fromEvent(this.btnAddWord, "click").subscribe(async () => {
+            await this.vm.addWord(this.vm.obInputWord.getValue())
             this.wordList.scrollTop = this.wordList.clientHeight;
         })
 
@@ -50,6 +51,7 @@ class View {
             this.vm.addWordItem()
             this.vm.obInputWordItemEng.next("")
             this.vm.obInputWordItemKor.next("")
+            this.inputWordItemEng.focus();
         })
 
         const eventShowKor = fromEvent(this.btnShowKor, "click").pipe(mapTo("kor"))
@@ -166,6 +168,7 @@ class View {
                 console.log(item);
                 const DictionaryItem = WordListItem(item.wordName);
                 const li = DictionaryItem.li
+                li.id = `list-${item.id}`
                 const menu = DictionaryItem.menu
                 this.wordList.append(li);
                 fromEvent(li,"click").subscribe(async ()=>{
@@ -213,15 +216,12 @@ class View {
                 console.log("ob",dict)
                 const liTag = Array.from(this.wordList.children)
                 liTag.map((liItem,index)=>{
-                    if(index===dict.index){
+                    const dictId = extractNumberFromId(liItem.id);
+                    if(dictId===dict.id){
                         liItem.classList.add("active")
-
                     }else{
-
                         liItem.classList.remove("active")
                     }
-
-
                 })
                 wordList.map((item, itemIdx) => {
                     const dictEntity = this.vm.obCurrentDictionaryInfo.getValue();
@@ -241,9 +241,9 @@ class View {
                         console.log(changeEng, changeKor)
 
                     })
-                    fromEvent(btnDelete, "click").subscribe(() => {
+                    fromEvent(btnDelete, "click").subscribe(async () => {
                         const isDelete = confirm("삭제시 복구 못하는데 할거??");
-                        this.vm.removeWordItem(isDelete, dictEntity.id, itemIdx);
+                        await this.vm.removeWordItem(isDelete, dictEntity.id, itemIdx);
 
 
                     })

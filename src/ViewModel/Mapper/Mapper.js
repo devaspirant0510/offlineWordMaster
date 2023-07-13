@@ -6,12 +6,11 @@ import Dictionary from "../model/Dictionary";
  * @param index {number}
  * @constructor
  */
-export const EntityToModel = (entity,index)=>{
+export const EntityToModel = (entity)=>{
     return new Dictionary(
         entity.id,
         entity.wordName,
         entity.data,
-        index
     );
 
 }

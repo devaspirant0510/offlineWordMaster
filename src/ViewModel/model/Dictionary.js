@@ -1,9 +1,8 @@
 class Dictionary{
-    constructor(id,wordName,data,index) {
+    constructor(id,wordName,data) {
         this.id = id
         this.wordName = wordName
         this.data = data;
-        this.index = index;
     }
 }
 export default Dictionary;

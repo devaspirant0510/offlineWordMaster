@@ -83,9 +83,7 @@ class WordTestViewModel extends BaseViewModel {
             return;
         }
         this.obViewState.next(TestViewState.TEST)
-        this.obCtTestOpVisible.next({ option: false, main: true });
         const wordData = this.mediator.getWordList();
-        console.log(wordData);
         this.obWordMaxSize.next(wordData.data.length);
         this.testData = this.service.createQuestion(wordData.data, this.obTestOptionKor2Eng.getValue());
         this.answerData = this.service.createQuestion(wordData.data,!(this.obTestOptionKor2Eng.getValue()))
@@ -99,6 +97,7 @@ class WordTestViewModel extends BaseViewModel {
         }
         const curSize = this.obWordCurSize.getValue();
         const maxSize = this.obWordMaxSize.getValue();
+        console.log(curSize,maxSize)
         if (curSize + 1 === maxSize) {
             this.obNextWordOpt.next(true)
             this.obUserAnswers.next(

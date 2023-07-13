@@ -66,12 +66,11 @@ class ViewModel extends BaseViewModel{
     /**
      * 유저가 dictionary 리스트에서 단어를 선택했을때 해당 단어정보를 가져와 observer 변수에 세팅
      * @param {number} id  Dictionary Entity 의 key 값
-     * @param {number} index
      */
-    async selectDictionary(id,index){
+    async selectDictionary(id){
         const getOneDict = await this.service.getDictionaryById(id);
         if(getOneDict){
-            const convertModel = EntityToModel(getOneDict,index);
+            const convertModel = EntityToModel(getOneDict);
             this.obCurrentDictionaryInfo.next(convertModel);
         }
 
@@ -88,6 +87,7 @@ class ViewModel extends BaseViewModel{
             const removeResult = await this.service.removeWordName(wordId)
             const resultList = MapperWordNames(removeResult)
             this.obDictionaryList.next(resultList)
+            this.selectDictionary(resultList[0].id,0).then()
         }
     }
 
@@ -96,29 +96,28 @@ class ViewModel extends BaseViewModel{
             return null;
         }
         this.service.updateWordName(wordId, changeName).then(r => {
-            this.obDictionaryList.next(r);
+            this.obDictionaryList.next(MapperWordNames(r));
+            this.selectDictionary(wordId).then()
         }).catch(e => {
             alert(e.message)
         })
 
     }
 
-    addWord(wordName) {
+    async addWord(wordName) {
         if (wordName === "" || wordName === undefined) {
             //alert("내용을 입력해주세요");
             return;
         }
-        this.service.addWord(wordName).then(r => {
-            if (r === null) {
-                throw new Error("add word failed.");
-            }
-            const currentList = this.obDictionaryList.getValue()
-            const newList = [...currentList, r]
-            this.obDictionaryList.next(newList)
-            this.obInputWord.next("");
-        }).catch(e => {
-            alert(e.message.toString());
-        })
+        const addedWordName = await this.service.addWord(wordName);
+        if(addedWordName==null){
+            throw new Error("add word failed.");
+        }
+        const currentList = this.obDictionaryList.getValue()
+        const newList = [...currentList,addedWordName ]
+        this.obDictionaryList.next(newList)
+        this.obInputWord.next("");
+        await this.selectDictionary(addedWordName.id)
     }
 
     addWordItem() {
@@ -143,16 +142,14 @@ class ViewModel extends BaseViewModel{
      * @param wordId {number}
      * @param wordItemId {number}
      */
-    removeWordItem(isDelete, wordId, wordItemId) {
+    async removeWordItem(isDelete, wordId, wordItemId) {
         if (!isDelete) {
             return;
         }
-        this.service.removeWordItem(wordId, wordItemId).then(wordList => {
-            let dict = this.obCurrentDictionaryInfo.getValue();
-            this.obWordInfoList.next(wordList);
-        }).catch(e => {
-            alert(e.message)
-        })
+        const resultWord = await this.service.removeWordItem(wordId, wordItemId);
+        if(resultWord){
+            this.selectDictionary(wordId).then()
+        }
     }
 
     /**
@@ -171,8 +168,7 @@ class ViewModel extends BaseViewModel{
             alert("변경할값이 없습니다.")
         }
         this.service.updateWordItem(wordId, wordItemId, changeKor, changeEng).then(wordList => {
-            console.log(wordList)
-            this.obWordInfoList.next(wordList)
+            this.selectDictionary(wordId).then()
         }).catch(e => {
             console.log(e.message)
         });

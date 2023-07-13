@@ -1,5 +1,6 @@
 import WordEntity from "../Data/entity/WordEntity";
-import {MapperWordNames} from "./Mapper/Mapper";
+import {MapperWordNames, MapperWordNamesOne} from "./Mapper/Mapper";
+import WordNames from "./model/WordNames";
 
 class Service {
      /**
@@ -66,6 +67,12 @@ class Service {
 
     }
 
+    /**
+     *
+     * @param {number} id
+     * @param {string} changeName
+     * @returns {Promise<DictionaryEntity[]>}
+     */
     async updateWordName(id, changeName) {
         const readAll = await this.repo.readAll();
         const validName = readAll.filter(item => item.wordName === changeName)
@@ -90,17 +97,17 @@ class Service {
     /**
      *
      * @param {string} wordName
-     * @returns {Promise<DictionaryEntity>}
+     * @returns {Promise<WordNames>}
      */
     async addWord(wordName) {
         const readAll = await this.repo.readAll();
         // 중복된 값이 있는지 확인
-        // const validName = readAll.filter(item => item.wordName === wordName)
-        let validName = []
+        const validName = readAll.filter(item => item.wordName === wordName)
         if (validName.length === 0) {
             // word 추가후 추가한 데이터 리턴
             const resultIndex = await this.repo.addWordHeader(wordName)
-            return await this.repo.readOne(resultIndex)
+            const dict = await this.repo.readOne(resultIndex)
+            return MapperWordNamesOne(dict)
         } else {
             // 중복된 값이 있을시
             throw new Error("There are duplicate values, 'wordName' must be a unique name")

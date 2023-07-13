@@ -17,17 +17,17 @@
                 =
             </button>
             <h1>
-                WordTestApp
+                Word Test App
             </h1>
         </nav>
         <aside id="side-container">
-            <h2>my Word</h2>
+            <h2>my Dictionary</h2>
             <section id="section-word-list">
                 <ul id="li-word-list">
 
                 </ul>
                 <div id="input-button-container">
-                    <label for="input-word-name"></label><input id="input-word-name" />
+                    <label for="input-word-name"></label><input id="input-word-name" placeholder="Enter Dictionary Name.."/>
                     <button id="btn-add-word">추가</button>
                 </div>
             </section>
@@ -62,15 +62,31 @@
             <h2 id="h2-word-title">테스트</h2>
             <button id="btn-test-exit">exit</button>
             <div id="ct-test-option">
-                <label for="op-kor-eng">
-                    kor→eng
-                </label>
-                <input id="op-kor-eng" name="test-option" type="radio"/>
-                <label for="op-eng-kor">
-                    eng→kor
-                </label>
-                <input id="op-eng-kor" name="test-option" type="radio"/>
-                <button id="btn-test-option-start">start</button>
+                <div>
+                    <h3 style="display: inline-block">testType :</h3>
+                    <label for="op-kor-eng">
+                        kor→eng
+                    </label>
+                    <input id="op-kor-eng" name="test-option" type="radio"/>
+                    <label for="op-eng-kor">
+                        eng→kor
+                    </label>
+                    <input id="op-eng-kor" name="test-option" type="radio"/>
+                    <label for="op-random">
+                        random
+                    </label>
+                    <input id="op-random" name="test-option" type="radio" disabled>
+                </div>
+                <div>
+                    <h3 style="display: inline-block">shuffled :</h3>
+                    <label for="shuffled">
+                        shuffle word
+                    </label>
+                    <input id="shuffled" type="checkbox" disabled>
+                </div>
+                <div style="display: flex; justify-content: center">
+                    <button id="btn-test-option-start">start</button>
+                </div>
             </div>
             <div id="ct-test">
                 <div id="test-progress">1/20</div>

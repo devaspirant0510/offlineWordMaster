@@ -29,6 +29,12 @@ class Repository {
         }
     }
 
+    /**
+     *
+     * @param {number} wordId
+     * @param {string} wordName
+     * @returns {Promise<DictionaryEntity[]>}
+     */
     async updateWordHeader(wordId, wordName) {
         const store = await this.dm.getObjectStore2();
         const getReq = store.get(wordId);
