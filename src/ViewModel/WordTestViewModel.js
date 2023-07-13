@@ -60,11 +60,6 @@ class WordTestViewModel extends BaseViewModel {
 
 
     }
-    init(){
-        this.obWordMaxSize.next(0)
-        this.obWordCurSize.next(0)
-        this.obWordQuestion.next("")
-    }
     clear(){
         this.sm.stateClear();
     }
@@ -82,7 +77,7 @@ class WordTestViewModel extends BaseViewModel {
             alert("옵션을 선택해주세요")
             return;
         }
-        this.obViewState.next(TestViewState.TEST)
+        this.showTestView();
         const wordData = this.mediator.getWordList();
         this.obWordMaxSize.next(wordData.data.length);
         this.testData = this.service.createQuestion(wordData.data, this.obTestOptionKor2Eng.getValue());
@@ -112,6 +107,7 @@ class WordTestViewModel extends BaseViewModel {
         this.obUserAnswers.next(
             [...this.obUserAnswers.getValue(),userInput]
         )
+        this.obUserInput.next("")
     }
     submitCheck(){
         let okCount = 0;

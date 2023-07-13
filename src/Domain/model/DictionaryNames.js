@@ -1,4 +1,4 @@
-class WordNames{
+class DictionaryNames {
     /**
      *
      * @param {number} id
@@ -9,4 +9,4 @@ class WordNames{
         this.wordName = wordName;
     }
 }
-export default WordNames;
+export default DictionaryNames;

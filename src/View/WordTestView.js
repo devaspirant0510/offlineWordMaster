@@ -201,6 +201,10 @@ class WordTestView extends BaseView{
 
 
         })
+        this.vm.obUserInput.subscribe((value)=>{
+            this.inputTestAnswer.value = value
+
+        })
 
     }
 }

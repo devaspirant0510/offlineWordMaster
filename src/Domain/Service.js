@@ -1,6 +1,5 @@
 import WordEntity from "../Data/entity/WordEntity";
 import {MapperWordNames, MapperWordNamesOne} from "./Mapper/Mapper";
-import WordNames from "./model/WordNames";
 
 class Service {
      /**
@@ -14,7 +13,7 @@ class Service {
         this.repo = repository
     }
     /**
-     * @returns {Promise<Array<WordNames>>}
+     * @returns {Promise<Array<DictionaryNames>>}
      */
     async getWordList() {
         const getAllWord = await this.repo.readAll();
@@ -97,9 +96,9 @@ class Service {
     /**
      *
      * @param {string} wordName
-     * @returns {Promise<WordNames>}
+     * @returns {Promise<DictionaryNames>}
      */
-    async addWord(wordName) {
+    async addDictionary(wordName) {
         const readAll = await this.repo.readAll();
         // 중복된 값이 있는지 확인
         const validName = readAll.filter(item => item.wordName === wordName)
@@ -114,6 +113,13 @@ class Service {
         }
     }
 
+    /**
+     *
+     * @param {index} wordIndex
+     * @param {string} kor
+     * @param {string} eng
+     * @returns {Promise<WordEntity[]>}
+     */
     async addWordItem(wordIndex, kor, eng) {
         const entity = new WordEntity(kor, eng);
         return await this.repo.addWordItem(wordIndex, entity);
@@ -162,6 +168,22 @@ class Service {
     }
     activeTest(){
         
+    }
+
+    /**
+     *
+     * @param wordList {WordEntity[]}
+     * @returns {Promise<WordEntity[]>}
+     */
+    async getShuffleWord(wordList){
+        let rangeArr = Array.from({length:wordList.length},(_, idx)=>idx)
+        rangeArr = rangeArr.sort(()=>Math.random()-0.5)
+        /** @type {WordEntity[]} */
+        let shuffleWordList = []
+        rangeArr.map(v=>{
+            shuffleWordList.push(wordList[v])
+        })
+        return shuffleWordList
     }
 
 

@@ -10,9 +10,9 @@ import Mediator from "./ViewModel/Mediator";
 const mediator = new Mediator();
 const repo = new Repository()
 const service1 = new Service(repo)
-const wordTestSerivce = new WordTestService(repo)
+const wordTestService = new WordTestService(repo)
 const viewModel = new ViewModel(service1,mediator)
-const wordTestViewModel = new WordTestViewModel(wordTestSerivce,mediator);
+const wordTestViewModel = new WordTestViewModel(wordTestService,mediator);
 
 new TestView(wordTestViewModel);
 new View(viewModel);

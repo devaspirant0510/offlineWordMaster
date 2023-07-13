@@ -1,16 +1,16 @@
 import DictionaryEntity from "../../Data/entity/DictionaryEntity";
-import WordNames from "../model/WordNames";
+import DictionaryNames from "../model/DictionaryNames";
 import dictionary from "../../ViewModel/model/Dictionary";
 /**
  *
  * @param dictionary {DictionaryEntity[]}
- * @returns {WordNames[]}
+ * @returns {DictionaryNames[]}
  */
 export const MapperWordNames = (dictionary)=>{
-    /** @type {WordNames[]} */
+    /** @type {DictionaryNames[]} */
     const wordNames = []
     dictionary.map(dict=>{
-        wordNames.push(new WordNames(dict.id,dict.wordName))
+        wordNames.push(new DictionaryNames(dict.id,dict.wordName))
     })
     return wordNames;
 }
@@ -18,8 +18,8 @@ export const MapperWordNames = (dictionary)=>{
 /**
  *
  * @param {DictionaryEntity} dictionary
- * @returns {WordNames}
+ * @returns {DictionaryNames}
  */
 export const MapperWordNamesOne = (dictionary) =>{
-    return new WordNames(dictionary.id,dictionary.wordName)
+    return new DictionaryNames(dictionary.id,dictionary.wordName)
 }

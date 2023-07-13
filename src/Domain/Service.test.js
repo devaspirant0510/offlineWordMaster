@@ -1,7 +1,7 @@
 import Service from "./Service";
 import DictionaryEntity from "../Data/entity/DictionaryEntity";
 import WordEntity from "../Data/entity/WordEntity";
-import WordNames from "./model/WordNames";
+import DictionaryNames from "./model/DictionaryNames";
 import {expectedError} from "@babel/core/lib/errors/rewrite-stack-trace";
 const tempDic = new DictionaryEntity(
         "test",
@@ -34,8 +34,8 @@ it("getWordList", ()=>{
     const r = service.getWordList()
     r.then(res=>{
         expect(res).toEqual([
-            new WordNames(1,repo.readAll()[0].wordName),
-            new WordNames(2,repo.readAll()[1].wordName),
+            new DictionaryNames(1,repo.readAll()[0].wordName),
+            new DictionaryNames(2,repo.readAll()[1].wordName),
         ])
 
     })
@@ -44,7 +44,7 @@ it("getWordList", ()=>{
 describe("addWord",()=>{
     it("addWord test1",()=>{
         const service = new Service(repo);
-        const r = service.addWord("test3")
+        const r = service.addDictionary("test3")
         r.then(res=>{
             expect(res).toEqual(repo.readAll()[repo.readAll().length-1])
         })
@@ -52,7 +52,7 @@ describe("addWord",()=>{
     it("duplicate name",async ()=>{
         const service = new Service(repo);
         const addWordFunction = async () => {
-            await service.addWord("abc");
+            await service.addDictionary("abc");
         };
         await expect(addWordFunction).rejects.toThrow(Error);
     })

@@ -43,7 +43,7 @@ class View {
         });
 
         fromEvent(this.btnAddWord, "click").subscribe(async () => {
-            await this.vm.addWord(this.vm.obInputWord.getValue())
+            await this.vm.addDictionary(this.vm.obInputWord.getValue())
             this.wordList.scrollTop = this.wordList.clientHeight;
         })
 
@@ -75,11 +75,11 @@ class View {
                     this.engRegTag.forEach(el => el.style.visibility = "visible")
                 } else {
                     // show kor 을 누를시 show eng 는 비활성화
-                    if(state.kor){
+                    if (state.kor) {
                         setDisableElement(this.btnShowEng)
                     }
                     // show eng 를 누를시 show kor 은 비활성화
-                    else if(state.eng){
+                    else if (state.eng) {
                         setDisableElement(this.btnShowKor)
                     }
                     this.korRegTag.forEach(el => el.style.visibility = state.kor ? "visible" : "hidden")
@@ -119,12 +119,13 @@ class View {
 
         this.wordToolsWrapper = document.querySelector("#container-word-tools");
         this.wordToolsWrapper.style.visibility = "hidden";
+        this.btnShuffleWord = document.querySelector("#btn-shuffle-word")
         this.btnShowKor = document.querySelector("#btn-show-kor")
         this.btnShowEng = document.querySelector("#btn-show-eng")
         this.korRegTag = document.querySelectorAll(".korean")
         this.engRegTag = document.querySelectorAll(".english")
 
-        document.querySelector("#dummy").addEventListener("click",()=>{
+        document.querySelector("#dummy").addEventListener("click", () => {
             this.vm.addDummyData();
         })
         /** @type {HTMLElement}*/
@@ -135,14 +136,17 @@ class View {
         this.btnTest = document.querySelector("#btn-test");
         /** @type {HTMLElement}*/
         this.btnTestExit = document.querySelector("#btn-test-exit");
-        fromEvent(this.btnTest,"click").subscribe(isTest=>{
+        fromEvent(this.btnTest, "click").subscribe(isTest => {
             this.vm.rootObIsTest.next(!this.vm.rootObIsTest.getValue());
         })
-        fromEvent(this.btnTestExit,"click").subscribe(()=>{
+        fromEvent(this.btnTestExit, "click").subscribe(() => {
             this.vm.mediator.testClear();
             this.vm.rootObIsTest.next(!this.vm.rootObIsTest.getValue());
         })
-        this.vm.rootObIsTest.subscribe((isTest)=>{
+        fromEvent(this.btnShuffleWord, "click").subscribe(() => {
+            this.vm.shuffleWord()
+        })
+        this.vm.rootObIsTest.subscribe((isTest) => {
             console.log(isTest);
 
             if (isTest) {
@@ -156,7 +160,7 @@ class View {
         })
 
         this.btnNavMenu = document.querySelector("#nav-btn-menu");
-        this.btnNavMenu.addEventListener("click",()=>{
+        this.btnNavMenu.addEventListener("click", () => {
             this.ctSideBar.classList.toggle("show-side-menu")
         })
     }
@@ -164,15 +168,15 @@ class View {
     wordListDataBinding() {
         this.vm.obDictionaryList.subscribe((value) => {
             this.wordList.innerHTML = ""
-            value.map((item,idx) => {
+            value.map((item, idx) => {
                 console.log(item);
                 const DictionaryItem = WordListItem(item.wordName);
                 const li = DictionaryItem.li
                 li.id = `list-${item.id}`
                 const menu = DictionaryItem.menu
                 this.wordList.append(li);
-                fromEvent(li,"click").subscribe(async ()=>{
-                    await this.vm.selectDictionary(item.id,idx)
+                fromEvent(li, "click").subscribe(async () => {
+                    await this.vm.selectDictionary(item.id, idx)
                 });
                 const btnUpdate = menu.querySelector(".btn-word-update")
                 const btnDelete = menu.querySelector(".btn-word-delete")
@@ -192,9 +196,7 @@ class View {
 
         });
         this.vm.obInputWord.subscribe((value) => {
-            if (value !== undefined) {
-                this.inputWordName.value = value;
-            }
+            this.inputWordName.value = value;
         })
 
     }
@@ -213,13 +215,13 @@ class View {
                 this.wordToolsWrapper.style.visibility = ViewState.VISIBLE
                 clearInnerHtml(this.wordInfoList)
                 const wordList = dict.data
-                console.log("ob",dict)
+                console.log("ob", dict)
                 const liTag = Array.from(this.wordList.children)
-                liTag.map((liItem,index)=>{
+                liTag.map((liItem, index) => {
                     const dictId = extractNumberFromId(liItem.id);
-                    if(dictId===dict.id){
+                    if (dictId === dict.id) {
                         liItem.classList.add("active")
-                    }else{
+                    } else {
                         liItem.classList.remove("active")
                     }
                 })
@@ -236,7 +238,7 @@ class View {
 
                         const changeEng = prompt("바꿀 eng 값을 입력해주세요", item.eng);
                         const changeKor = prompt("바꿀 kor 값을 입력해주세요", item.kor);
-                        this.vm.updateWordItem(dictEntity.id, itemIdx, item,changeEng, changeKor);
+                        this.vm.updateWordItem(dictEntity.id, itemIdx, item, changeEng, changeKor);
 
                         console.log(changeEng, changeKor)
 

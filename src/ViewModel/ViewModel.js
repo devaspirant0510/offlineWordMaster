@@ -1,4 +1,4 @@
-import {Subject, BehaviorSubject, pipe, map} from "rxjs"
+import {Subject, BehaviorSubject, pipe, map, identity} from "rxjs"
 import Service from "../Domain/Service"
 import WordEntity from "../Data/entity/WordEntity";
 import Mediator from "./Mediator";
@@ -7,7 +7,7 @@ import BaseViewModel from "../utils/Base/BaseViewModel";
 import StateManager from "../utils/StateManager";
 import {MapperWordNames} from "../Domain/Mapper/Mapper";
 import Dictionary from "./model/Dictionary";
-import WordNames from "../Domain/model/WordNames";
+import DictionaryNames from "../Domain/model/DictionaryNames";
 import {EntityToModel} from "./Mapper/Mapper";
 
 class ViewModel extends BaseViewModel{
@@ -21,16 +21,12 @@ class ViewModel extends BaseViewModel{
         this.service = service
         mediator.register(this)
         this.sm = new StateManager();
-        /**@type {BehaviorSubject<Array<WordNames>>} */
+        /**@type {BehaviorSubject<Array<DictionaryNames>>} Dictionary List names */
         this.obDictionaryList = this.sm.addState(new BehaviorSubject([]));
         /**@type {BehaviorSubject<string>} */
         this.obInputWord = this.sm.addState(new BehaviorSubject(""));
-        /**@type {Subject<string>} */
-        this.obWordTitile = this.sm.addState(new BehaviorSubject(""));
         /**@type {BehaviorSubject<Dictionary|null>} */
         this.obCurrentDictionaryInfo = this.sm.addState(new BehaviorSubject(null));
-        /** @type {Subject<Array<WordEntity>>} */
-        this.obWordInfoList = this.sm.addState(new BehaviorSubject([]));
 
         this.obInputWordItemKor = this.sm.addState(new BehaviorSubject(""));
         this.obInputWordItemEng = this.sm.addState(new BehaviorSubject(""));
@@ -50,8 +46,7 @@ class ViewModel extends BaseViewModel{
         this.obDictionaryList.next(readWordList)
         const readFirstDictionary = await this.service.getFirstDictionary();
         if(readFirstDictionary){
-            await this.selectDictionary(readFirstDictionary.id,0)
-            this.obWordInfoList.next(readFirstDictionary.data)
+            await this.selectDictionary(readFirstDictionary.id)
         }
     }
     async addDummyData(){
@@ -61,6 +56,7 @@ class ViewModel extends BaseViewModel{
         await this.service.addWordItem(id,"도시의","urban")
         await this.service.addWordItem(id,"출발","arrival")
         await this.service.addWordItem(id,"도착","departure")
+        await this.selectDictionary(id);
     }
 
     /**
@@ -87,7 +83,7 @@ class ViewModel extends BaseViewModel{
             const removeResult = await this.service.removeWordName(wordId)
             const resultList = MapperWordNames(removeResult)
             this.obDictionaryList.next(resultList)
-            this.selectDictionary(resultList[0].id,0).then()
+            await this.selectDictionary(resultList[0].id)
         }
     }
 
@@ -104,12 +100,12 @@ class ViewModel extends BaseViewModel{
 
     }
 
-    async addWord(wordName) {
+    async addDictionary(wordName) {
         if (wordName === "" || wordName === undefined) {
             //alert("내용을 입력해주세요");
             return;
         }
-        const addedWordName = await this.service.addWord(wordName);
+        const addedWordName = await this.service.addDictionary(wordName);
         if(addedWordName==null){
             throw new Error("add word failed.");
         }
@@ -174,6 +170,22 @@ class ViewModel extends BaseViewModel{
         });
 
 
+    }
+    async shuffleWord(){
+        const shuffleWordList = await this.service.getShuffleWord(this.obCurrentDictionaryInfo.getValue().data)
+        this.obCurrentDictionaryInfo.next(
+            {
+                ...this.obCurrentDictionaryInfo.getValue(),
+                data:shuffleWordList
+            }
+        )
+        // let randIdxArr = []
+        // for(let i=0; i<rangeArr.length; i++){
+        //     const randN = Math.ceil(Math.random()*rangeArr.length);
+        //     rangeArr=rangeArr.filter((_,idx)=>idx!==rangeArr[randN]);
+        //
+        // }
+        // console.log(randIdxArr)
     }
 
 }

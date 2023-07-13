@@ -82,10 +82,15 @@ class Repository {
     async createWordOne(wordName) {
         const store = await this.dm.getObjectStore2();
         const reqAdd = store.add({wordName: wordName, data: []})
-        const result = await this.dm.transactionMapper(reqAdd)
-        return result;
+        return await this.dm.transactionMapper(reqAdd);
     }
 
+    /**
+     *
+     * @param wordIndex
+     * @param wordEntity
+     * @returns {Promise<WordEntity[]>}
+     */
     async addWordItem(wordIndex, wordEntity) {
         try {
             const store = await this.dm.getObjectStore2()
