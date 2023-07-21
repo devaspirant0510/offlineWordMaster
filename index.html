@@ -8,19 +8,24 @@
     <title>WordTestApp</title>
     <link rel="stylesheet" type="text/css" href="./style.css">
     <link rel="stylesheet" type="text/css" href="./mobile.css">
+<!--    <link rel="stylesheet" type="text/css" href="./new-style.css">-->
 </head>
 
 <body>
-    <main id="main-container">
-        <nav id="nav-container">
+    <div id="content-blur" style="display: none"></div>
+    <nav id="nav-container">
+        <div class="nav-wrapper">
             <button id="nav-btn-menu">
                 =
             </button>
-            <h1>
-                Word Test App
-            </h1>
-        </nav>
-        <aside id="side-container">
+        </div>
+        <h1>
+            Word Test App
+        </h1>
+        <div class="nav-wrapper"></div>
+    </nav>
+    <main id="main-container" >
+        <aside id="side-container" class="content-card-view">
             <h2>my Dictionary</h2>
             <section id="section-word-list">
                 <ul id="li-word-list">
@@ -32,7 +37,7 @@
                 </div>
             </section>
         </aside>
-        <article id="article-container">
+        <article id="article-container" class="content-card-view">
             <h2 id="h2-word-title"></h2>
             <div class="white-card-view" id="container-word-tools">
                 <button id="dummy" style="display: none">dummy</button>
