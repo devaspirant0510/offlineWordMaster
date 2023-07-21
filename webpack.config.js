@@ -1,5 +1,6 @@
 const path = require("path")
 const {Configuration} = require("webpack")
+const DOTENV = require("dotenv-webpack");
 
 /** 
  * @type {Configuration} 
@@ -43,5 +44,8 @@ module.exports = {
         },
         compress:true,
         port:8080
-    }
+    },
+    plugins: [
+        new DOTENV()
+    ]
 }

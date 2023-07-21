@@ -2,6 +2,8 @@ import {fromEvent} from "rxjs";
 import {CSS_REF} from "../../utils/Constant"
 import {displayNone,displayShowen} from "../../utils/ViewUtils"
 
+const imagePath = process.env.MODE === "DEV" ? "/resource/dots3.png":"/dist/resource/dots3.png"
+
 export const WordContextMenu = () => {
     const ctx = document.createElement("div");
     ctx.classList.add("word-ctx-menu")
@@ -19,7 +21,7 @@ export const WordContextMenu = () => {
 const DotsImage =()=>{
     const img = document.createElement("img")
     img.classList.add = "word-menu-icon"
-    img.src = "/resource/dots3.png";
+    img.src = imagePath
     img.width = 25
     img.height = 25
     return img
@@ -78,7 +80,7 @@ export const WordItemLayout=(eng,kor,id)=>{
                         </span>
                 `;
     const img = document.createElement("img");
-    img.src="/resource/dots3.png";
+    img.src=imagePath
     img.width = 25;
     img.height = 25;
     const div = document.createElement("div");
