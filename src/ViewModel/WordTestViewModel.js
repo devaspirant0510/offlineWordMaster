@@ -79,10 +79,12 @@ class WordTestViewModel extends BaseViewModel {
         }
         this.showTestView();
         const wordData = this.mediator.getWordList();
-        this.obWordMaxSize.next(wordData.data.length);
-        this.testData = this.service.createQuestion(wordData.data, this.obTestOptionKor2Eng.getValue());
-        this.answerData = this.service.createQuestion(wordData.data,!(this.obTestOptionKor2Eng.getValue()))
-        this.obWordQuestion.next(this.testData[0])
+        if(wordData.data.length){
+            this.obWordMaxSize.next(wordData.data.length);
+            this.testData = this.service.createQuestion(wordData.data, this.obTestOptionKor2Eng.getValue());
+            this.answerData = this.service.createQuestion(wordData.data,!(this.obTestOptionKor2Eng.getValue()))
+            this.obWordQuestion.next(this.testData[0])
+        }
     }
     showNextWord() {
         const userInput = this.obUserInput.getValue();

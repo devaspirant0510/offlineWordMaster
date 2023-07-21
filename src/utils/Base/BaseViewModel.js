@@ -24,10 +24,10 @@ class BaseViewModel{
     }
     rootSettingEvent(){
         fromEvent(this.btnTest,"click").subscribe(isTest=>{
-            this.rootObIsTest.next(!this.rootObIsTest.getValue());
+            // this.rootObIsTest.next(!this.rootObIsTest.getValue());
         })
         fromEvent(this.btnTestExit,"click").subscribe(()=>{
-            this.rootObIsTest.next(!this.rootObIsTest.getValue());
+            // this.rootObIsTest.next(!this.rootObIsTest.getValue());
         })
     }
     rootSubscribe(){

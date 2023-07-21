@@ -1,8 +1,7 @@
-import {fromEvent,mapTo,scan,pipe,merge,tap} from "rxjs"
+import {fromEvent, mapTo, merge, scan, tap} from "rxjs"
 import BaseView from "../utils/Base/BaseView"
-import WordTestViewModel from "../ViewModel/WordTestViewModel";
-import {displayNone,displayShowen} from "../utils/ViewUtils";
-import { TestViewState } from "../ViewModel/model/TestViewState";
+import {displayNone, displayShowen} from "../utils/ViewUtils";
+import {TestViewState} from "../ViewModel/model/TestViewState";
 import {WordTestResultHeader} from "./layouts/WordTestResultHeader";
 
 class WordTestView extends BaseView{
@@ -60,8 +59,7 @@ class WordTestView extends BaseView{
         }
         mergeEvent.pipe(
             scan((state,event)=>{
-                const newState = initialState;
-                return{...newState,[event]:true}
+                return{...(initialState),[event]:true}
             },{kor2eng:false,eng2kor:false}),
             tap(state=>{
                 this.vm.obTestOptionEng2Kor.next(state.eng2kor);

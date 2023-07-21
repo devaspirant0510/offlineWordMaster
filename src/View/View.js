@@ -1,6 +1,6 @@
 import ViewModel from "../ViewModel/ViewModel";
 import {fromEvent, scan, pipe, tap, merge, mapTo, map} from "rxjs"
-import {CSS_REF, ViewState} from "../utils/Constant"
+import {CSS_REF, MEDIA_QUERY, ViewState} from "../utils/Constant"
 import {WordContextMenu, WordItemLayout, WordListItem} from "./layouts/WordList"
 import {
     displayNone,
@@ -94,8 +94,13 @@ class View {
     settingDom() {
         /**@type {HTMLElement} wordList 컨테이너*/
         this.mainSection = document.querySelector("#section-word-list");
+        /**@type {HTMLElement} wordList 컨테이너*/
         this.ctSideBar = document.querySelector("#side-container")
         this.ctSideBar.classList.toggle("show-side-menu")
+        /**@type {HTMLElement} wordList 컨테이너*/
+        this.ctArticle = document.querySelector("#article-container")
+        /**@type {HTMLElement} wordList 컨테이너*/
+        this.ctNav = document.querySelector("#nav-container")
         /**@type {HTMLElement} wordList 의 리스트*/
         this.wordList = document.querySelector("#li-word-list");
         /**@type {HTMLElement} wordInfo 제목*/
@@ -129,6 +134,8 @@ class View {
             this.vm.addDummyData();
         })
         /** @type {HTMLElement}*/
+        this.ctRootView = document.querySelector("#main-container");
+        /** @type {HTMLElement}*/
         this.cTmainView = document.querySelector("#article-container");
         /** @type {HTMLElement}*/
         this.ctTestView = document.querySelector("#test-container");
@@ -136,6 +143,20 @@ class View {
         this.btnTest = document.querySelector("#btn-test");
         /** @type {HTMLElement}*/
         this.btnTestExit = document.querySelector("#btn-test-exit");
+
+        this.contentBlur = document.querySelector("#content-blur")
+        this.contentBlur.addEventListener("click",()=>{
+            const mq = window.matchMedia(MEDIA_QUERY.MOBILE)
+            const eventQu = (e)=>{
+                if(e.matches){
+                    this.ctSideBar.style.display = "none"
+                    this.contentBlur.style.display = "none"
+                }
+            }
+            eventQu(mq)
+            mq.addEventListener("change",eventQu)
+
+        })
         fromEvent(this.btnTest, "click").subscribe(isTest => {
             this.vm.rootObIsTest.next(!this.vm.rootObIsTest.getValue());
         })
@@ -143,8 +164,8 @@ class View {
             this.vm.mediator.testClear();
             this.vm.rootObIsTest.next(!this.vm.rootObIsTest.getValue());
         })
-        fromEvent(this.btnShuffleWord, "click").subscribe(() => {
-            this.vm.shuffleWord()
+        fromEvent(this.btnShuffleWord, "click").subscribe(async () => {
+            await this.vm.shuffleWord()
         })
         this.vm.rootObIsTest.subscribe((isTest) => {
             console.log(isTest);
@@ -158,10 +179,16 @@ class View {
 
             }
         })
+        this.ctRootView.style.height  = `${document.body.offsetHeight}px`
 
         this.btnNavMenu = document.querySelector("#nav-btn-menu");
         this.btnNavMenu.addEventListener("click", () => {
-            this.ctSideBar.classList.toggle("show-side-menu")
+            this.ctSideBar.style.display = "block"
+            this.ctSideBar.style.position = "absolute"
+            //this.ctSideBar.style.top = `${this.ctNav.offsetHeight}px`
+            this.ctSideBar.style.height = `${document.body.offsetHeight}px`
+            // this.ctSideBar.style.clientHeight = `(${this.ctArticle.clientHeight}-${this.ctNav.offsetHeight})px`
+            this.contentBlur.style.display = "block"
         })
     }
 
@@ -176,7 +203,17 @@ class View {
                 const menu = DictionaryItem.menu
                 this.wordList.append(li);
                 fromEvent(li, "click").subscribe(async () => {
-                    await this.vm.selectDictionary(item.id, idx)
+                    await this.vm.selectDictionary(item.id)
+
+                    const mq = window.matchMedia(MEDIA_QUERY.MOBILE)
+                    const eventQu = (e)=>{
+                        if(e.matches){
+                            this.ctSideBar.style.display = "none"
+                            this.contentBlur.style.display = "none"
+                        }
+                    }
+                    eventQu(mq)
+                    mq.addEventListener("change",eventQu)
                 });
                 const btnUpdate = menu.querySelector(".btn-word-update")
                 const btnDelete = menu.querySelector(".btn-word-delete")

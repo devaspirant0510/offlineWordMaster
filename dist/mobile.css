@@ -1,13 +1,49 @@
 @media (max-width: 768px) {
-    /* 모바일 화면 크기에 대한 스타일 수정 */
-    #nav-btn-menu{
-        display: block;
+    body {
+        padding: 0;
     }
-    #side-container{
+
+    /* 모바일 화면 크기에 대한 스타일 수정 */
+    #nav-btn-menu {
+        display: block;
+        border-radius: 20px;
+        width: 40px;
+        height: 40px;
+        border: none;
+        color: black;
+        background-color: #d3d3d3;
+        margin: 0 0 0 4px;
+    }
+
+    #side-container {
+        display: none ;
+        position: absolute;
+        z-index: 2;
+    }
+    #side-container::before{
         display: none;
     }
-    #main-container{
+
+    #nav-container {
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    #main-container {
         display: grid;
         grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: 10px;
+        position: relative;
+    }
+}
+@media (min-width: 769px) {
+    #content-blur{
+        display: none !important;
+    }
+    #main-container{
+        grid-template-columns: 1fr 4fr !important;
+    }
+    #side-container{
+        position: static !important;
     }
 }

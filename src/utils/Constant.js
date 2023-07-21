@@ -18,3 +18,8 @@ export const TEST_RESULT_HEADERS = [
     "실제답",
     "정답유무"
 ]
+
+export const MEDIA_QUERY = {
+    PC:'(min-width: 769px)',
+    MOBILE:'(max-width: 768px)'
+}
