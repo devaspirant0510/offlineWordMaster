@@ -1,127 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html lang='en'>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>WordTestApp</title>
-    <link rel="stylesheet" type="text/css" href="./style.css">
-    <link rel="stylesheet" type="text/css" href="./mobile.css">
-    <link rel="shortcut icon" href="./resource/app-icon.png">
-    <link rel="manifest" href="../manifest.json">
-<!--    <script type="module">-->
-<!--        import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';-->
-<!--        const el = document.createElement('pwa-update');-->
-<!--        document.body.appendChild(el);-->
-<!--    </script>-->
-<!--    <link rel="stylesheet" type="text/css" href="./new-style.css">-->
+	<meta charset='UTF-8' />
+	<link href='/vite.svg' rel='icon' type='image/svg+xml' />
+	<meta content='width=device-width, initial-scale=1.0' name='viewport' />
+	<title>Vite + React + TS</title>
+	<style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+		html,body{
+			height:100%
+		}
+	</style>
+  <script type="module" crossorigin src="/assets/index-3a07aefc.js"></script>
 </head>
-
 <body>
-    <div id="content-blur" style="display: none"></div>
-    <nav id="nav-container">
-        <div class="nav-wrapper">
-            <button id="nav-btn-menu">
-                =
-            </button>
-        </div>
-        <h1>
-            Word Test App
-        </h1>
-        <div class="nav-wrapper"></div>
-    </nav>
-    <main id="main-container" >
-        <aside id="side-container" class="content-card-view">
-            <h2>my Dictionary</h2>
-            <section id="section-word-list">
-                <ul id="li-word-list">
+<div id='root' style='height: 100%'></div>
 
-                </ul>
-                <div id="input-button-container">
-                    <label for="input-word-name"></label><input id="input-word-name" placeholder="Enter Dictionary Name.."/>
-                    <button id="btn-add-word">추가</button>
-                </div>
-            </section>
-        </aside>
-        <article id="article-container" class="content-card-view">
-            <h2 id="h2-word-title"></h2>
-            <div class="white-card-view" id="container-word-tools">
-                <button id="dummy" style="display: none">dummy</button>
-
-                <button id="btn-shuffle-word"> shuffle</button>
-                <label for="btn-show-kor">
-                    show kor
-                </label>
-                <input type="checkbox" id="btn-show-kor">
-                <label for="btn-show-eng">
-                    show eng
-                </label>
-                <input type="checkbox" id="btn-show-eng">
-                <button id="btn-test">
-                    test
-                </button>
-            </div>
-            <ol class="white-card-view" id="li-word-info-list">
-            </ol>
-            <div id="input-wrapper">
-                <input type="text" placeholder="Enter eng" id="input-word-item-eng" />
-                <input type="text" placeholder="Enter kor" id="input-word-item-kor" />
-                <button id="btn-add-word-item">Submit</button>
-            </div>
-        </article>
-        <article id="test-container" style="display: none" class="card-view">
-            <h2 class="h2-title">테스트</h2>
-            <button id="btn-test-exit">exit</button>
-            <div id="ct-test-option" class="white-card-view">
-                <div>
-                    <h3 style="display: inline-block">testType :</h3>
-                    <label for="op-kor-eng">
-                        kor→eng
-                    </label>
-                    <input id="op-kor-eng" name="test-option" type="radio"/>
-                    <label for="op-eng-kor">
-                        eng→kor
-                    </label>
-                    <input id="op-eng-kor" name="test-option" type="radio"/>
-                    <label for="op-random">
-                        random
-                    </label>
-                    <input id="op-random" name="test-option" type="radio" disabled>
-                </div>
-                <div>
-                    <h3 style="display: inline-block">shuffled :</h3>
-                    <label for="shuffled">
-                        shuffle word
-                    </label>
-                    <input id="shuffled" type="checkbox" disabled>
-                </div>
-                <div style="display: flex; justify-content: center">
-                    <button id="btn-test-option-start">start</button>
-                </div>
-            </div>
-            <div id="ct-test" class="white-card-view">
-                <div id="test-progress">1/20</div>
-                <div id="test-question">
-                </div>
-                <label for="test-answer">
-                    <input id="test-answer" placeholder="enter answer.."/>
-                </label>
-                <button id="btn-word-answer">다음</button>
-            </div>
-            <div id="ct-result">
-                <table id="table-result" >
-                    <tr>
-                        <th>문제</th>
-                        <th>내가쓴답</th>
-                        <th>실제답</th>
-                        <th>정답유무</th>
-                    </tr>
-                </table>
-            </div>
-        </article>
-    </main>
-    <script src="./bundle.js"></script>
 </body>
-
 </html>
