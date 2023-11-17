@@ -1,6 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { ListItem, ListItemButton, ListItemText } from '@mui/material';
 import DictionaryEntity from '../../../data/entity/DictionaryEntity.ts';
+import { useMainStore } from '../../../domain/store/useMainStore.ts';
 
 interface Props {
 	children?: React.ReactNode;
@@ -8,12 +9,14 @@ interface Props {
 }
 
 const DictionaryItem: FC<Props> = ({ dictionary }) => {
-	const onClickItem = useCallback(()=>{
+	const { setCurPage } = useMainStore();
+	const onClickItem = useCallback(() => {
+		setCurPage(dictionary);
 
-	},[])
+	}, [dictionary]);
 	return (
-		<ListItem  disablePadding>
-			<ListItemButton  onClick={onClickItem}>
+		<ListItem disablePadding>
+			<ListItemButton onClick={onClickItem}>
 				<ListItemText primary={dictionary.wordName} />
 			</ListItemButton>
 		</ListItem>

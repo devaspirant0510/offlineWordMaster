@@ -33,16 +33,15 @@ const DictionaryList: FC<Props> = ({ dictionaryList }) => {
 				</CardHeader>
 				<CardContent>
 					{dictionaryList.map(v => (
-							<div key={v.id}>
-								<DictionaryItem dictionary={v} />
-								<Divider />
-							</div>
+						<div key={v.wordName}>
+							<DictionaryItem dictionary={v} />
+							<Divider />
+						</div>
 						),
 					)}
-
-				</CardContent>;
+				</CardContent>
 			</Card>
-			<AddDictionaryDialog isOpen={isOpenDialog} handleClose={handleCloseDialog}/>
+			<AddDictionaryDialog isOpen={isOpenDialog} handleClose={handleCloseDialog} />
 
 		</>
 
