@@ -20,5 +20,10 @@ class RepositoryImpl implements Repository{
 		return await this.local.saveWord(id,word);
 	}
 
+	async deleteDictionaryById(id: IDBValidKey): Promise<IDBValidKey> {
+		return await this.local.saveRemoveDictionary(id)
+	}
+
+
 }
 export default RepositoryImpl;

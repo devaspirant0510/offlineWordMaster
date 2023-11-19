@@ -30,6 +30,13 @@ class LocalDataSource {
 		resGetIdx.data = [...resGetIdx.data, wordEntity]
 		const updateIdx = await this.dm.transactionMapper<IDBValidKey>(store.put(resGetIdx));
 		return await this.dm.transactionMapper<DictionaryEntity>(store.get(updateIdx))
+	}
+	async saveRemoveDictionary(wordId:IDBValidKey){
+		const store = await this.dm.getObjectStore();
+		const delReq = store.delete(wordId);
+		await this.dm.transactionMapper(delReq);
+		return wordId;
+
 
 	}
 }

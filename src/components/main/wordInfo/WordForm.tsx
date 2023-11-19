@@ -39,7 +39,6 @@ const WordForm: FC<Props> = () => {
 					return acc
 				},[])
 				setCurPage(data)
-				console.log(result);
 				return result
 
 			});

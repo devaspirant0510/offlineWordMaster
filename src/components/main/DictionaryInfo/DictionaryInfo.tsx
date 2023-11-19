@@ -5,6 +5,8 @@ import { MoreVert } from '@mui/icons-material';
 import WordTools from '../wordInfo/WordTools.tsx';
 import WordList from '../wordInfo/WordList.tsx';
 import WordForm from '../wordInfo/WordForm.tsx';
+import useDialogState from '../../../hooks/useDialogState.ts';
+import RemoveDictionaryDialog from '../dialog/RemoveDictionaryDialog.tsx';
 
 interface Props {
 	children?: React.ReactNode;
@@ -12,6 +14,7 @@ interface Props {
 
 const DictionaryInfo: FC<Props> = () => {
 	const { curPage } = useMainStore();
+	const [isRmDictOpen,openRmDictDialog,closeRmDictDialog] = useDialogState()
 	const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 	const [isPopoverOpen, setPopover] = useState(false);
 	const onClosePopover = useCallback(() => {
@@ -52,19 +55,22 @@ const DictionaryInfo: FC<Props> = () => {
 						>
 							<ButtonGroup orientation='vertical'>
 								<Button variant='outlined' color='success'>단어장 이름 변경</Button>
-								<Button variant='outlined' color='error'>단어장 삭제</Button>
+								<Button onClick={openRmDictDialog} variant='outlined' color='error'>단어장 삭제</Button>
 							</ButtonGroup>
+
 						</Popover>
 					</>
 
 				}
 			/>
+
 			<CardContent style={{height:'80vh'}}>
 				<div style={{display:'flex', flexDirection:'column'}}>
+					<RemoveDictionaryDialog isOpen={isRmDictOpen} handleClose={closeRmDictDialog}/>
 					<div style={{height:'10vh'}}>
 						<WordTools />
 					</div>
-					<div style={{height:'60vh', overflowY:'auto'}}>
+					<div style={{flex:1}}>
 						<WordList wordList={curPage.data} />
 					</div>
 					<div style={{height:'10vh'}}>
