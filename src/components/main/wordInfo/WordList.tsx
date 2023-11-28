@@ -12,7 +12,7 @@ interface Props {
 
 const WordList: FC<Props> = ({}) => {
 	const { isLoading } = useQuery({ queryKey: ['myKey'], queryFn: () => repo.readAllDictionary() });
-	const { curPage } = useMainStore();
+	const { curPage ,isShowKor,isShowEng} = useMainStore();
 	if (isLoading) {
 		return <>loading</>;
 	}
@@ -39,10 +39,10 @@ const WordList: FC<Props> = ({}) => {
 										{idx+1}
 									</TableCell>
 									<TableCell>
-										{word.eng}
+										{isShowEng && word.eng}
 									</TableCell>
 									<TableCell>
-										{word.kor}
+										{isShowKor && word.kor}
 									</TableCell>
 								</TableRow>
 							);

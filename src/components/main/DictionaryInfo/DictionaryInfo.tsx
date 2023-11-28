@@ -5,7 +5,7 @@ import { MoreVert } from '@mui/icons-material';
 import WordTools from '../wordInfo/WordTools.tsx';
 import WordList from '../wordInfo/WordList.tsx';
 import WordForm from '../wordInfo/WordForm.tsx';
-import useDialogState from '../../../hooks/useDialogState.ts';
+import useDialogState from '../../../../../../../pipecoding/CodeRoom/CodeRoom/src/hooks/useDialogState.ts';
 import RemoveDictionaryDialog from '../dialog/RemoveDictionaryDialog.tsx';
 
 interface Props {
@@ -14,12 +14,11 @@ interface Props {
 
 const DictionaryInfo: FC<Props> = () => {
 	const { curPage } = useMainStore();
-	const [isRmDictOpen,openRmDictDialog,closeRmDictDialog] = useDialogState()
+	const [isRmDictOpen, openRmDictDialog, closeRmDictDialog] = useDialogState();
 	const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 	const [isPopoverOpen, setPopover] = useState(false);
 	const onClosePopover = useCallback(() => {
 		setPopover(false);
-
 	}, []);
 	const onClickDictMore = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(e.currentTarget);
@@ -64,16 +63,16 @@ const DictionaryInfo: FC<Props> = () => {
 				}
 			/>
 
-			<CardContent style={{height:'80vh'}}>
-				<div style={{display:'flex', flexDirection:'column'}}>
-					<RemoveDictionaryDialog isOpen={isRmDictOpen} handleClose={closeRmDictDialog}/>
-					<div style={{height:'10vh'}}>
+			<CardContent style={{ height: '80vh' }}>
+				<div style={{ display: 'flex', flexDirection: 'column' }}>
+					<RemoveDictionaryDialog isOpen={isRmDictOpen} handleClose={closeRmDictDialog} />
+					<div style={{ height: '10vh' }}>
 						<WordTools />
 					</div>
-					<div style={{flex:1}}>
+					<div style={{ flex: 1 }}>
 						<WordList wordList={curPage.data} />
 					</div>
-					<div style={{height:'10vh'}}>
+					<div style={{ height: '10vh' }}>
 						<WordForm />
 					</div>
 

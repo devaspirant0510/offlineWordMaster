@@ -16,11 +16,10 @@ const App = () => {
 	const { setCurPage} = useMainStore();
 	const { isLoading, data } = useQuery({ queryKey: ['myKey'], queryFn: () => repo.readAllDictionary() });
 	console.log(isLoading, data);
-	useEffect(() => {
+	useEffect( () => {
 		if (data && data.length > 0) {
 			setCurPage(data[0])
 		}
-
 	}, [data]);
 	if (isLoading) {
 		return (
@@ -41,7 +40,6 @@ const App = () => {
 				<Grid lg={8} md={6} sm={0} xs={0}>
 					{data && <DictionaryList dictionaryList={data} />}
 				</Grid>
-
 				<Grid lg={16} md={18} sm={24} xs={24}>
 					<DictionaryInfo/>
 				</Grid>

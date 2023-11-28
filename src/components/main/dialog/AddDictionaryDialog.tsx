@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import DictionaryEntity from '../../../data/entity/DictionaryEntity.ts';
 import Repository from '../../../domain/Repository.ts';
 import { RepoContext } from '../../../main.tsx';
-import useInput from '../../../hooks/useInput.ts';
+import useInput from '../../../../../../../pipecoding/CodeRoom/CodeRoom/src/hooks/useInput.ts';
 
 interface Props {
 	children?: React.ReactNode;
