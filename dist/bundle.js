@@ -2527,7 +2527,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var imagePath =  true ? "/resource/dots3.png" : 0;
 var WordContextMenu = function WordContextMenu() {
   var ctx = document.createElement("div");
   ctx.classList.add("word-ctx-menu");
@@ -2545,7 +2544,7 @@ var WordContextMenu = function WordContextMenu() {
 var DotsImage = function DotsImage() {
   var img = document.createElement("img");
   img.classList.add = "word-menu-icon";
-  img.src = imagePath;
+  img.src = "/resource/dots3.png";
   img.width = 25;
   img.height = 25;
   return img;
@@ -2595,7 +2594,7 @@ var WordItemLayout = function WordItemLayout(eng, kor, id) {
   var li = document.createElement("li");
   li.innerHTML = "\n                        <span class=\"english\">\n                            ".concat(eng, "\n                        </span>\n                        <span class=\"korean\" >\n                            ").concat(kor, "\n                        </span>\n                ");
   var img = document.createElement("img");
-  img.src = imagePath;
+  img.src = "/resource/dots3.png";
   img.width = 25;
   img.height = 25;
   var div = document.createElement("div");
