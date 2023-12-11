@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import WordEntity from '../../../data/entity/WordEntity.ts';
 import { useQuery } from '@tanstack/react-query';
 import { repo } from '../../../pages/main/App.tsx';
-import { useMainStore } from '../../../domain/store/useMainStore.ts';
+import { useMainStore } from '../../../store/useMainStore.ts';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 interface Props {

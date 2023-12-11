@@ -2,7 +2,7 @@ import React, { FC, useCallback, useContext } from 'react';
 import { Button, TextField } from '@mui/material';
 import Repository from '../../../domain/Repository.ts';
 import { RepoContext } from '../../../main.tsx';
-import { useMainStore } from '../../../domain/store/useMainStore.ts';
+import { useMainStore } from '../../../store/useMainStore.ts';
 import WordEntity from '../../../data/entity/WordEntity.ts';
 import { useQueryClient ,useMutation} from '@tanstack/react-query';
 import DictionaryEntity from '../../../data/entity/DictionaryEntity.ts';
@@ -58,7 +58,7 @@ const WordForm: FC<Props> = () => {
 
 	},[inputKor,inputEng,curPage])
 	return (
-		<div style={{height:'100%',display:'flex'}}>
+		<div style={{height:'100%'}}>
 			<TextField
 				style={{flex:'1 1 auto'}}
 				value={inputEng}

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import DictionaryEntity from '../../data/entity/DictionaryEntity.ts';
+import DictionaryEntity from '../data/entity/DictionaryEntity.ts';
 
 interface State {
 	curPage?: DictionaryEntity;

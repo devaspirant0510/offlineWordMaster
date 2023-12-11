@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useContext } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import { useMainStore } from '../../../domain/store/useMainStore.ts';
+import { useMainStore } from '../../../store/useMainStore.ts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { RepoContext } from '../../../main.tsx';
 import DictionaryEntity from '../../../data/entity/DictionaryEntity.ts';

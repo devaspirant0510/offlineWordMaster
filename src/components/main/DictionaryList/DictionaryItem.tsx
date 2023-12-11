@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { ListItem, ListItemButton, ListItemText } from '@mui/material';
 import DictionaryEntity from '../../../data/entity/DictionaryEntity.ts';
-import { useMainStore } from '../../../domain/store/useMainStore.ts';
+import { useMainStore } from '../../../store/useMainStore.ts';
 
 interface Props {
 	children?: React.ReactNode;

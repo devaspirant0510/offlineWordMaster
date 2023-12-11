@@ -26,10 +26,14 @@ class DBManager {
 		};
 	}
 
-	async transactionMapper<T>(request:IDBRequest):Promise<T> {
-		return new Promise<T>((resolve, reject) => {
+	async transactionMapper<T>(request:IDBRequest):Promise<T|null> {
+		return new Promise<T|null>((resolve, reject) => {
 			request.onsuccess = () => {
-				resolve(request.result);
+				console.log(request.result);
+				if(!request.result) resolve(null)
+				else{
+					resolve(request.result);
+				}
 			};
 			request.onerror = () => {
 				reject(request.error);
